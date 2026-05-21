@@ -18,17 +18,17 @@ group-portal_26_05/
 
 ## Інструкція Як працювати з Git (GitFlow)
 
-1. Перейти на `develop` та оновити його:
+1. Перейти на `main` та оновити його:
 
    ```bash
-   git checkout develop
-   git pull origin develop
+   git checkout main
+   git pull origin main
    ```
 
 2. Подивитися свій таск у Trello.
    Назва гілки = ID таска, наприклад: `FOR-2`, `GL-3`, `AUTH-1` тощо.
 
-3. Створити гілку від `develop`:
+3. Створити гілку від `main`:
 
    ```bash
    git checkout -b FOR-2
