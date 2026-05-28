@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "diary",
     "portfolio",
     "gallery",
+    "forum",
 ]
 
 MIDDLEWARE = [
