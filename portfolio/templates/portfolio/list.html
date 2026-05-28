@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Досьє курсантів</title>
+</head>
+<body>
+    <h1>Досьє курсантів Heist Academy</h1>
+
+    {% if portfolios %}
+        <ul>
+            {% for p in portfolios %}
+                <li>
+                    <a href="{% url 'portfolio:detail' p.id %}">
+                        <strong>{{ p.codename }}</strong>
+                    </a>
+                    — {{ p.get_specialization_display }}(Рівень {{ p.level }})
+                    <br>
+                    {% if p.bio %}
+                        {{ p.bio|truncatewords:20 }}
+                    {% else %}
+                        <em>Опис відсутній</em>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Ще немає жодного досьє.</p>
+    {% endif %}
+</body>
+</html>
