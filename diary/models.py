@@ -2,11 +2,15 @@ from django.db import models
 from django.conf import settings
 
 
-class Subject(models.Model):
-    """Предмет / напрямок гейм-дев навчання."""
+class TrainingSubject(models.Model):
+    """Навчальний предмет / дисципліна курсантів.
 
-    name = models.CharField(
-        max_length=100,
+    Приклади: Планування операцій, Маскування, Командна робота,
+    Аналіз систем безпеки, Стратегія втечі, Шифри та коди.
+    """
+
+    title = models.CharField(
+        max_length=150,
         unique=True,
         verbose_name="Назва предмету",
     )
@@ -14,62 +18,61 @@ class Subject(models.Model):
         blank=True,
         verbose_name="Опис",
     )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата створення",
+    )
 
     class Meta:
-        verbose_name = "Предмет"
-        verbose_name_plural = "Предмети"
-        ordering = ["name"]
+        verbose_name = "Навчальний предмет"
+        verbose_name_plural = "Навчальні предмети"
+        ordering = ["title"]
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Grade(models.Model):
-    """Оцінка учня з конкретного предмету."""
-
-    GRADE_CHOICES = [(i, str(i)) for i in range(1, 13)]  # 1–12 балів
+    """Оцінка курсанта з навчального предмету."""
 
     student = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="grades",
-        verbose_name="Учень",
+        verbose_name="Курсант",
     )
     subject = models.ForeignKey(
-        Subject,
+        TrainingSubject,
         on_delete=models.CASCADE,
         related_name="grades",
         verbose_name="Предмет",
     )
-    grade = models.PositiveSmallIntegerField(
-        choices=GRADE_CHOICES,
+    score = models.PositiveSmallIntegerField(
         verbose_name="Оцінка",
     )
     comment = models.CharField(
         max_length=255,
         blank=True,
         verbose_name="Коментар",
-        help_text="За що виставлена оцінка: проєкт, домашка, гейм-джем тощо",
     )
-    date_issued = models.DateField(
-        verbose_name="Дата виставлення",
-    )
-    issued_by = models.ForeignKey(
+    teacher = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         null=True,
         related_name="issued_grades",
-        verbose_name="Виставив",
-        help_text="Викладач або модератор гейм-клубу",
+        verbose_name="Інструктор",
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Дата виставлення",
     )
 
     class Meta:
         verbose_name = "Оцінка"
         verbose_name_plural = "Оцінки"
-        ordering = ["-date_issued", "student__username"]
+        ordering = ["-created_at"]
 
     def __str__(self):
         return (
-            f"{self.student.get_full_name() or self.student.username} | "
-            f"{self.subject} | {self.grade} | {self.date_issued}"
+            f"{self.student.username} | {self.subject} | {self.score}"
         )

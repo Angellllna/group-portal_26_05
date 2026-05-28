@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import Grade, Subject
+from .models import Grade, TrainingSubject
 
 
-@admin.register(Subject)
-class SubjectAdmin(admin.ModelAdmin):
-    list_display = ("name", "description")
-    search_fields = ("name",)
+@admin.register(TrainingSubject)
+class TrainingSubjectAdmin(admin.ModelAdmin):
+    list_display = ("title", "description", "created_at")
+    search_fields = ("title",)
 
 
 @admin.register(Grade)
@@ -13,18 +13,13 @@ class GradeAdmin(admin.ModelAdmin):
     list_display = (
         "student",
         "subject",
-        "grade",
-        "comment",
-        "date_issued",
-        "issued_by",
+        "score",
+        "teacher",
+        "created_at",
     )
-    list_filter = ("subject", "student", "date_issued")
+    list_filter = ("subject", "teacher", "created_at")
     search_fields = (
         "student__username",
-        "student__first_name",
-        "student__last_name",
         "comment",
     )
-    date_hierarchy = "date_issued"
-    autocomplete_fields = ["student", "issued_by"]
-    list_select_related = ("student", "subject", "issued_by")
+    list_select_related = ("student", "subject", "teacher")
