@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ item.title }} | Галерея | Heist Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gallery/css/gallery_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detail-page">
+  <div class="container">
+
+    
+    <nav class="breadcrumb" aria-label="Навігація">
+      <a href="{% url 'gallery:list' %}">Галерея</a>
+      <span class="breadcrumb__sep">//</span>
+      <span>{{ item.title }}</span>
+    </nav>
+
+    
+    <div class="detail-layout">
+
+      
+      <div class="media-panel">
+        <span class="media-panel__type-badge">{{ item.get_media_type_display }}</span>
+
+        {% if item.media_type == 'video' %}
+          <video class="media-panel__video" controls preload="metadata">
+            <source src="{{ item.file.url }}">
+            Ваш браузер не підтримує відео.
+          </video>
+        {% else %}
+          <img class="media-panel__img"
+               src="{{ item.file.url }}"
+               alt="{{ item.title }}">
+        {% endif %}
+      </div>
+
+      
+      <aside class="info-panel">
+
+        <div>
+          <p class="info-panel__eyebrow">// Матеріал #{{ item.id }}</p>
+          <h1 class="info-panel__title">{{ item.title }}</h1>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        <div class="meta-table">
+          <div class="meta-row">
+            <span class="meta-row__key">Автор</span>
+            <span class="meta-row__val meta-row__val--gold">{{ item.author.get_full_name|default:item.author.username }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-row__key">Гра</span>
+            <span class="meta-row__val">{{ item.game_name }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-row__key">Тип</span>
+            <span class="meta-row__val">{{ item.get_media_type_display }}</span>
+          </div>
+          <div class="meta-row">
+            <span class="meta-row__key">Дата додавання</span>
+            <span class="meta-row__val">{{ item.created_at|date:"d.m.Y, H:i" }}</span>
+          </div>
+        </div>
+
+        <div class="gold-divider"></div>
+
+        {% if item.description %}
+        <p class="info-panel__desc">{{ item.description }}</p>
+        {% else %}
+        <p class="info-panel__desc"></p>
+        {% endif %}
+
+        <div class="action-row">
+          <a href="{{ item.file.url }}" download class="btn-gold">Завантажити</a>
+          <a href="{% url 'gallery:list' %}?type={{ item.media_type }}" class="btn-outline">
+            Ще {{ item.get_media_type_display|lower }}
+          </a>
+        </div>
+
+      </aside>
+    </div>
+
+
+    <div class="back-row">
+      <a href="{% url 'gallery:list' %}" class="btn-outline">&larr; Назад до галереї</a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
