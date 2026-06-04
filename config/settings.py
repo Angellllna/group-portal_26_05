@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "gallery",
     "forum",
     "announcements",
+    "accounts",
 ]
 
 MIDDLEWARE = [
