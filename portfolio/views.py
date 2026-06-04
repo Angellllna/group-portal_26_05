@@ -32,7 +32,6 @@ class PortfolioUpdateView(LoginRequiredMixin, UpdateView):
             defaults={
                 "codename": self.request.user.username,
                 "specialization": "gunsmith",
-                "level": 1,
             }
         )
 
