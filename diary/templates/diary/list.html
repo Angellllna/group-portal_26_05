@@ -1,0 +1,134 @@
+{% extends "core/base.html" %}
+
+{% block title %}Електронний щоденник – Heist Academy{% endblock %}
+
+{% block content %}
+<style>
+    .diary-container {
+        max-width: 1000px;
+        margin: 30px auto;
+        padding: 0 20px;
+    }
+
+    .diary-header {
+        margin-bottom: 24px;
+    }
+
+    .diary-header h1 {
+        font-size: 26px;
+        color: #222;
+        margin-bottom: 6px;
+    }
+
+    .diary-header p {
+        font-size: 14px;
+        color: #666;
+    }
+
+    .diary-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+
+    .diary-table thead {
+        background: #2c2c2c;
+        color: #fff;
+    }
+
+    .diary-table thead th {
+        padding: 12px 16px;
+        text-align: left;
+        font-size: 13px;
+        letter-spacing: 0.4px;
+    }
+
+    .diary-table tbody tr:nth-child(even) {
+        background: #f9f9f9;
+    }
+
+    .diary-table tbody tr:hover {
+        background: #eef3ff;
+    }
+
+    .diary-table tbody td {
+        padding: 11px 16px;
+        font-size: 14px;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+
+    .score {
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .score-high { color: #2e7d32; }
+    .score-mid  { color: #f57c00; }
+    .score-low  { color: #c62828; }
+
+    .empty-msg {
+        text-align: center;
+        padding: 50px 20px;
+        color: #888;
+        font-size: 15px;
+    }
+</style>
+
+<div class="diary-container">
+    <div class="diary-header">
+        <h1>Електронний щоденник</h1>
+        <p>
+            {% if request.user.is_staff %}
+                Відображено всі оцінки (режим адміністратора)
+            {% else %}
+                Відображено ваші оцінки
+            {% endif %}
+        </p>
+    </div>
+
+    {% if grades %}
+    <table class="diary-table">
+        <thead>
+            <tr>
+                <th>Курсант</th>
+                <th>Навчальний напрямок</th>
+                <th>Бал</th>
+                <th>Коментар</th>
+                <th>Інструктор</th>
+                <th>Дата</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for grade in grades %}
+            <tr>
+                <td>{{ grade.student.get_full_name|default:grade.student.username }}</td>
+                <td>{{ grade.subject.title }}</td>
+                <td>
+                    <span class="score
+                        {% if grade.score >= 9 %}score-high
+                        {% elif grade.score >= 6 %}score-mid
+                        {% else %}score-low{% endif %}">
+                        {{ grade.score }}
+                    </span>
+                </td>
+                <td>{{ grade.comment|default:"—" }}</td>
+                <td>
+                    {% if grade.teacher %}
+                        {{ grade.teacher.get_full_name|default:grade.teacher.username }}
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+                <td>{{ grade.created_at|date:"d.m.Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-msg">Оцінок поки немає.</div>
+    {% endif %}
+</div>
+{% endblock %}
