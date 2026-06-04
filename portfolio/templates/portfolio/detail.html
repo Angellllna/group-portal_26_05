@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Досьє: {{ portfolio.codename }}</title>
+</head>
+<body>
+    <p><a href="{% url 'portfolio:list' %}">Назад до списку</a></p>
+
+    <h1>Досьє: {{ portfolio.codename }}</h1>
+
+    {% if portfolio.avatar %}
+        <img src="{{ portfolio.avatar.url }}" alt="{{ portfolio.codename }}" width="200">
+    {% endif %}
+
+    <ul>
+        <li><strong>Користувач:</strong> {{ portfolio.user.username }}</li>
+        <li><strong>Кодове ім'я:</strong> {{ portfolio.codename }}</li>
+        <li><strong>Спеціалізація:</strong> {{ portfolio.get_specialization_display }}</li>
+        <li><strong>Рівень:</strong> {{ portfolio.level }}</li>
+    </ul>
+
+    <h2>Навички</h2>
+    {% if portfolio.skills %}
+        <p>{{ portfolio.skills|linebreaks }}</p>
+    {% else %}
+        <p><em>Не вказано</em></p>
+    {% endif %}
+
+    <h2>Досягнення</h2>
+    {% if portfolio.achievements %}
+        <p>{{ portfolio.achievements|linebreaks }}</p>
+    {% else %}
+        <p><em>Не вказано</em></p>
+    {% endif %}
+
+    <h2>Опис</h2>
+    {% if portfolio.bio %}
+        <p>{{ portfolio.bio|linebreaks }}</p>
+    {% else %}
+        <p><em>Не вказано</em></p>
+    {% endif %}
+</body>
+</html>
