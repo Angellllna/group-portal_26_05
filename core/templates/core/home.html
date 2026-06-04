@@ -1,8 +1,45 @@
 {% extends "core/base.html" %}
 
-{% block title %}Home | Heist Academy{% endblock %}
+{% block title %}Heist Academy | Навчальний портал{% endblock %}
 
 {% block content %}
-<h1>Heist Academy</h1>
-<p>Welcome to the Heist Academy portal.</p>
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-content">
+            <p class="hero-kicker">Академія грабіжників</p>
+            <h1 class="hero-title">Heist Academy</h1>
+            <p class="hero-description">
+                Heist Academy — це навчальний портал для курсантів Академії грабіжників.
+                Тут можна переглядати оголошення, брати участь у місіях, вести досьє,
+                обговорювати завдання на форумі та відстежувати свій прогрес.
+            </p>
+            <div class="hero-actions">
+                <a class="button button-primary" href="#">Перейти до оголошень</a>
+                <a class="button" href="#">Переглянути події</a>
+                <a class="button" href="#">Увійти в акаунт</a>
+            </div>
+        </div>
+
+        <aside class="mission-panel" aria-label="Розділи порталу">
+            <div class="panel-header">
+                <span>Перший набір</span>
+                <span>Статус: active</span>
+            </div>
+            <ul class="module-list">
+                <li class="module-item">
+                    <span class="module-label">Оголошення</span>
+                    <span class="module-copy">Важливі новини академії та термінові інструкції.</span>
+                </li>
+                <li class="module-item">
+                    <span class="module-label">Місії</span>
+                    <span class="module-copy">Навчальні завдання, події та командні операції.</span>
+                </li>
+                <li class="module-item">
+                    <span class="module-label">Прогрес</span>
+                    <span class="module-copy">Особистий шлях курсанта від новачка до майстра.</span>
+                </li>
+            </ul>
+        </aside>
+    </div>
+</section>
 {% endblock %}
