@@ -1,16 +1,16 @@
+from django.conf import settings
 from django.db import models
-from django.contrib.auth.models import User
- 
- 
+
+
 class Profile(models.Model):
- 
+
     class Role(models.TextChoices):
-        CADET      = "cadet",      "Cadet"
+        CADET = "cadet", "Cadet"
         INSTRUCTOR = "instructor", "Instructor"
-        ADMIN      = "admin",      "Admin"
- 
+        ADMIN = "admin", "Admin"
+
     user = models.OneToOneField(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="profile",
         verbose_name="User",
@@ -33,12 +33,12 @@ class Profile(models.Model):
         verbose_name="Bio",
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created at")
-    updated_at = models.DateTimeField(auto_now=True,     verbose_name="Updated at")
- 
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated at")
+
     class Meta:
         verbose_name = "Profile"
         verbose_name_plural = "Profiles"
         ordering = ["-created_at"]
- 
+
     def __str__(self):
         return f"{self.codename} ({self.get_role_display()})"
