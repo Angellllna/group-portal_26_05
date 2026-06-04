@@ -1,0 +1,212 @@
+{% load static %}
+
+{% block title %}Завантажити матеріал | Галерея | Heist Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gallery/css/gallery_upload.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="upload-page">
+  <div class="container">
+
+    
+    <nav class="breadcrumb" aria-label="Навігація">
+      <a href="{% url 'gallery:list' %}">Галерея</a>
+      <span class="breadcrumb__sep">//</span>
+      <span>Завантажити</span>
+    </nav>
+
+    
+    {% if messages %}
+    <div class="messages-bar" role="alert">
+      {% for message in messages %}
+      <div class="message message--{{ message.tags }}">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    
+    <header class="upload-header">
+      <p class="upload-header__label">// Нова операція</p>
+      <h1 class="upload-header__title">Додати <span>матеріал</span></h1>
+      <p class="upload-header__sub">
+        Після перевірки модератором ваш матеріал з'явиться у галереї.
+      </p>
+    </header>
+
+    <div class="gold-rule"></div>
+
+    
+    <div class="upload-layout">
+
+      
+      <div class="form-card">
+
+        {% if form.non_field_errors %}
+        <div class="form-errors" role="alert">
+          <p class="form-errors__title">// Помилки форми</p>
+          <ul>
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          
+          <div class="form-group">
+            <label class="form-label" for="{{ form.title.id_for_label }}">
+              Назва <span class="required">*</span>
+            </label>
+            <input class="form-input {% if form.title.errors %}is-error{% endif %}"
+                   type="text"
+                   id="{{ form.title.id_for_label }}"
+                   name="{{ form.title.html_name }}"
+                   value="{{ form.title.value|default:'' }}"
+                   placeholder="Введіть назву матеріалу"
+                   autocomplete="off">
+            {% if form.title.errors %}
+            <ul class="field-errors">
+              {% for error in form.title.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          
+          <div class="form-group">
+            <label class="form-label" for="{{ form.action_name.id_for_label }}">
+              Назва події <span class="required">*</span>
+            </label>
+            <input class="form-input {% if form.action_name.errors %}is-error{% endif %}"
+                   type="text"
+                   id="{{ form.action_name.id_for_label }}"
+                   name="{{ form.action_name.html_name }}"
+                   value="{{ form.action_name.value|default:'' }}"
+                   placeholder="Наприклад: Пограбування банку, Зачистка сліду..."
+                   autocomplete="off">
+            {% if form.action_name.errors %}
+            <ul class="field-errors">
+              {% for error in form.action_name.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          
+          <div class="form-group">
+            <label class="form-label" for="{{ form.media_type.id_for_label }}">
+              Тип медіа <span class="required">*</span>
+            </label>
+            <div class="select-wrapper">
+              <select class="form-select"
+                      id="{{ form.media_type.id_for_label }}"
+                      name="{{ form.media_type.html_name }}">
+                {% for value, label in form.fields.media_type.choices %}
+                <option value="{{ value }}"
+                  {% if form.media_type.value == value %}selected{% endif %}>
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            {% if form.media_type.errors %}
+            <ul class="field-errors">
+              {% for error in form.media_type.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          
+          <div class="form-group">
+            <label class="form-label">
+              Файл <span class="required">*</span>
+            </label>
+            <div class="drop-zone" id="dropZone">
+              <input class="drop-zone__input"
+                     type="file"
+                     id="{{ form.file.id_for_label }}"
+                     name="{{ form.file.html_name }}"
+                     accept="image/*,video/*">
+              <span class="drop-zone__icon">📂</span>
+              <p class="drop-zone__text">
+                <strong>Перетягніть файл</strong> або натисніть для вибору
+              </p>
+              <p class="drop-zone__hint">Зображення або відео · до 100 МБ</p>
+              <div class="drop-zone__preview" id="filePreview">
+                <span class="drop-zone__preview-name" id="fileName"></span>
+                <button type="button" class="drop-zone__preview-remove" id="removeFile"
+                        aria-label="Видалити файл">✕</button>
+              </div>
+            </div>
+            {% if form.file.errors %}
+            <ul class="field-errors">
+              {% for error in form.file.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          
+          <div class="form-group">
+            <label class="form-label" for="{{ form.description.id_for_label }}">
+              Опис
+            </label>
+            <textarea class="form-textarea"
+                      id="{{ form.description.id_for_label }}"
+                      name="{{ form.description.html_name }}"
+                      placeholder="Короткий опис (необов'язково)..."
+                      rows="4">{{ form.description.value|default:'' }}</textarea>
+          </div>
+
+          
+          <div class="form-submit">
+            <button type="submit" class="btn-gold">Відправити на модерацію</button>
+            <a href="{% url 'gallery:list' %}" class="btn-outline">Скасувати</a>
+          </div>
+
+        </form>
+      </div>
+
+      
+      <aside class="info-side">
+        <div>
+          <p class="info-side__section-title">// Статус: {{ request.user.username }}</p>
+          <p>Ви авторизовані та можете додавати матеріали до галереї академії.</p>
+        </div>
+
+        <div class="info-side__rule"></div>
+
+        <div>
+          <p class="info-side__section-title">// Правила завантаження</p>
+          <ul class="rules-list">
+            <li>Лише матеріали, пов'язані з іграми або діяльністю академії.</li>
+            <li>Файли не більше 100 МБ.</li>
+            <li>Фото та скріншоти: JPG, PNG, GIF, WebP.</li>
+            <li>Відео: MP4, WebM, MOV.</li>
+            <li>Без образливого або неприйнятного контенту.</li>
+          </ul>
+        </div>
+
+        <div class="info-side__rule"></div>
+
+        <div>
+          <p class="info-side__section-title">// Модерація</p>
+          <p>
+            Кожен матеріал проходить перевірку адміністратором або модератором.
+            Після схвалення він з'явиться в галереї.
+          </p>
+        </div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'gallery/js/gallery_upload.js' %}"></script>
+{% endblock %}
