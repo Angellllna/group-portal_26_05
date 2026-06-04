@@ -1,0 +1,108 @@
+{% load static %}
+
+{% block title %}Галерея | Heist Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'gallery/css/gallery_list.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="gallery-page">
+  <div class="container">
+
+    
+    <header class="gallery-hero">
+      <p class="gallery-hero__label">// Heist Academy — Архів</p>
+      <h1 class="gallery-hero__title">Медіа<span>галерея</span></h1>
+      <p class="gallery-hero__sub">Документальні свідоцтва з полів операцій</p>
+    </header>
+
+    <div class="gold-rule"></div>
+
+    
+    <nav class="filter-bar" aria-label="Фільтр за типом">
+      <span class="filter-bar__label">Тип:</span>
+      <a href="{% url 'gallery:list' %}"
+         class="filter-btn {% if not media_type_filter %}active{% endif %}">
+        Усі
+      </a>
+      {% for value, label in media_types %}
+      <a href="{% url 'gallery:list' %}?type={{ value }}"
+         class="filter-btn {% if media_type_filter == value %}active{% endif %}">
+        {{ label }}
+      </a>
+      {% endfor %}
+    </nav>
+
+    
+    {% if media_items %}
+    <section class="media-grid" aria-label="Галерея медіа-матеріалів">
+      {% for item in media_items %}
+      <a class="media-card" href="{% url 'gallery:detail' item.id %}" aria-label="{{ item.title }}">
+
+    
+        {% if item.media_type == 'video' %}
+          <div class="media-card__video-placeholder">
+            <div class="media-card__play-icon">▶</div>
+          </div>
+        {% else %}
+          <img class="media-card__thumb"
+               src="{{ item.file.url }}"
+               alt="{{ item.title }}"
+               loading="lazy">
+        {% endif %}
+
+        
+        <span class="media-card__type-badge">{{ item.get_media_type_display }}</span>
+
+        
+        <div class="media-card__overlay">
+          <p class="media-card__title">{{ item.title }}</p>
+          <p class="media-card__meta">{{ item.game_name }} · {{ item.author.username }}</p>
+        </div>
+
+      </a>
+      {% endfor %}
+    </section>
+
+    
+    {% if is_paginated %}
+    <nav class="pagination" aria-label="Сторінки">
+      {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">&laquo;</a>
+      {% endif %}
+
+      {% for num in paginator.page_range %}
+        {% if page_obj.number == num %}
+          <span class="current">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a href="?page={{ num }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">&raquo;</a>
+      {% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-state__icon">🎞</div>
+      <p class="empty-state__text">Матеріали ще не додані або очікують схвалення.</p>
+    </div>
+    {% endif %}
+
+    {% comment %} TODO: розкоментувати після створення view gallery:upload
+    <div class="upload-cta">
+      <p class="upload-cta__text">
+        <strong>Маєш що показати?</strong><br>
+        Додай своє фото чи відео — після перевірки модератором воно з'явиться тут.
+      </p>
+      <a href="{% url 'gallery:upload' %}" class="btn-gold">Завантажити матеріал</a>
+    </div>
+    {% endcomment %}
+
+  </div>
+</div>
+{% endblock %}
