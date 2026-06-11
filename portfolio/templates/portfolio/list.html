@@ -2,30 +2,57 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Досьє курсантів</title>
 </head>
 <body>
     <h1>Досьє курсантів Heist Academy</h1>
 
-    {% if portfolios %}
-        <ul>
-            {% for p in portfolios %}
-                <li>
-                    <a href="{% url 'portfolio:detail' p.id %}">
-                        <strong>{{ p.codename }}</strong>
-                    </a>
-                    — {{ p.get_specialization_display }}(Рівень {{ p.level }})
-                    <br>
-                    {% if p.bio %}
-                        {{ p.bio|truncatewords:20 }}
-                    {% else %}
-                        <em>Опис відсутній</em>
-                    {% endif %}
-                </li>
+    <form method="get">
+        <label for="spec">Спеціалізація:</label>
+        <select name="specialization" id="spec">
+            <option value="">Всі</option>
+            {% for value, label in specializations %}
+                <option value="{{ value }}" {% if value == current_filter %}selected{% endif %}>
+                    {{ label }}
+                </option>
             {% endfor %}
-        </ul>
+        </select>
+        <button type="submit">Фільтрувати</button>
+        {% if current_filter %}
+            <a href="{% url 'portfolio:list' %}">Скинути фільтр</a>
+        {% endif %}
+    </form>
+
+    {% if portfolios %}
+        <section>
+            {% for p in portfolios %}
+                <article>
+                    <header>
+                        <h2>
+                            <a href="{% url 'portfolio:detail' p.id %}">{{ p.codename }}</a>
+                        </h2>
+                        <p>Рівень {{ p.level }}</p>
+                    </header>
+
+                    <section>
+                        <h3>Спеціалізація</h3>
+                        <p>{{ p.get_specialization_display }}</p>
+                    </section>
+
+                    <section>
+                        <h3>Короткий опис</h3>
+                        {% if p.bio %}
+                            <p>{{ p.bio|truncatewords:20 }}</p>
+                        {% else %}
+                            <p><em>Опис відсутній</em></p>
+                        {% endif %}
+                    </section>
+                </article>
+            {% endfor %}
+        </section>
     {% else %}
-        <p>Ще немає жодного досьє.</p>
+        <p>За вашим запитом досьє не знайдено.</p>
     {% endif %}
 </body>
 </html>
