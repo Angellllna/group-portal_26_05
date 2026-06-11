@@ -4,131 +4,177 @@
 
 {% block content %}
 <style>
+    .diary-section {
+        min-height: 100vh;
+        background:
+            linear-gradient(120deg, rgba(21, 17, 13, 0.94), rgba(52, 29, 26, 0.9)),
+            var(--ink, #15110d);
+        padding: 100px 20px 60px;
+    }
+
     .diary-container {
-        max-width: 1000px;
-        margin: 30px auto;
-        padding: 0 20px;
+        max-width: 1050px;
+        margin: 0 auto;
     }
 
     .diary-header {
-        margin-bottom: 24px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
     }
 
     .diary-header h1 {
         font-size: 26px;
-        color: #222;
-        margin-bottom: 6px;
+        font-weight: 800;
+        color: #fff8ec;
+        margin: 0 0 4px;
     }
 
     .diary-header p {
+        font-size: 13px;
+        color: rgba(255, 248, 236, 0.6);
+        margin: 0;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 0 20px;
+        border: none;
+        border-radius: 6px;
+        background: var(--gold, #d6a84f);
+        color: #21170c;
         font-size: 14px;
-        color: #666;
+        font-weight: 800;
+        text-decoration: none;
+        transition: background 160ms, transform 160ms;
+        white-space: nowrap;
+    }
+
+    .btn-add:hover {
+        background: #e7bd67;
+        transform: translateY(-1px);
     }
 
     .diary-table {
         width: 100%;
         border-collapse: collapse;
-        background: #fff;
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
 
     .diary-table thead {
-        background: #2c2c2c;
-        color: #fff;
+        background: rgba(255, 248, 236, 0.12);
     }
 
     .diary-table thead th {
-        padding: 12px 16px;
+        padding: 13px 16px;
         text-align: left;
-        font-size: 13px;
-        letter-spacing: 0.4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: rgba(255, 248, 236, 0.6);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid rgba(255, 248, 236, 0.12);
     }
 
-    .diary-table tbody tr:nth-child(even) {
-        background: #f9f9f9;
+    .diary-table tbody tr {
+        background: rgba(255, 248, 236, 0.04);
+        transition: background 120ms;
     }
 
     .diary-table tbody tr:hover {
-        background: #eef3ff;
+        background: rgba(255, 248, 236, 0.09);
     }
 
     .diary-table tbody td {
-        padding: 11px 16px;
+        padding: 12px 16px;
         font-size: 14px;
-        color: #333;
-        border-bottom: 1px solid #eee;
+        color: rgba(255, 248, 236, 0.9);
+        border-bottom: 1px solid rgba(255, 248, 236, 0.07);
     }
 
     .score {
-        font-weight: bold;
+        font-weight: 800;
         font-size: 16px;
     }
-    .score-high { color: #2e7d32; }
-    .score-mid  { color: #f57c00; }
-    .score-low  { color: #c62828; }
+    .score-high { color: #4ade80; }
+    .score-mid  { color: #fbbf24; }
+    .score-low  { color: #f87171; }
 
     .empty-msg {
         text-align: center;
-        padding: 50px 20px;
-        color: #888;
+        padding: 60px 20px;
+        color: rgba(255, 248, 236, 0.4);
         font-size: 15px;
+        background: rgba(255, 248, 236, 0.04);
+        border-radius: 8px;
     }
 </style>
 
-<div class="diary-container">
-    <div class="diary-header">
-        <h1>Електронний щоденник</h1>
-        <p>
-            {% if request.user.is_staff %}
-                Відображено всі оцінки (режим адміністратора)
-            {% else %}
-                Відображено ваші оцінки
-            {% endif %}
-        </p>
-    </div>
-
-    {% if grades %}
-    <table class="diary-table">
-        <thead>
-            <tr>
-                <th>Курсант</th>
-                <th>Навчальний напрямок</th>
-                <th>Бал</th>
-                <th>Коментар</th>
-                <th>Інструктор</th>
-                <th>Дата</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for grade in grades %}
-            <tr>
-                <td>{{ grade.student.get_full_name|default:grade.student.username }}</td>
-                <td>{{ grade.subject.title }}</td>
-                <td>
-                    <span class="score
-                        {% if grade.score >= 9 %}score-high
-                        {% elif grade.score >= 6 %}score-mid
-                        {% else %}score-low{% endif %}">
-                        {{ grade.score }}
-                    </span>
-                </td>
-                <td>{{ grade.comment|default:"—" }}</td>
-                <td>
-                    {% if grade.teacher %}
-                        {{ grade.teacher.get_full_name|default:grade.teacher.username }}
+<div class="diary-section">
+    <div class="diary-container">
+        <div class="diary-header">
+            <div>
+                <h1>Електронний щоденник</h1>
+                <p>
+                    {% if request.user.is_staff %}
+                        Всі оцінки (режим адміністратора)
                     {% else %}
-                        —
+                        Ваші оцінки
                     {% endif %}
-                </td>
-                <td>{{ grade.created_at|date:"d.m.Y H:i" }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <div class="empty-msg">Оцінок поки немає.</div>
-    {% endif %}
+                </p>
+            </div>
+            {% if request.user.is_staff or request.user.profile.role == "instructor" %}
+            <a href="{% url 'diary:add' %}" class="btn-add">+ Додати оцінку</a>
+            {% endif %}
+        </div>
+
+        {% if grades %}
+        <table class="diary-table">
+            <thead>
+                <tr>
+                    <th>Курсант</th>
+                    <th>Навчальний напрямок</th>
+                    <th>Бал</th>
+                    <th>Коментар</th>
+                    <th>Інструктор</th>
+                    <th>Дата</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for grade in grades %}
+                <tr>
+                    <td>{{ grade.student.get_full_name|default:grade.student.username }}</td>
+                    <td>{{ grade.subject.title }}</td>
+                    <td>
+                        <span class="score
+                            {% if grade.score >= 9 %}score-high
+                            {% elif grade.score >= 6 %}score-mid
+                            {% else %}score-low{% endif %}">
+                            {{ grade.score }}
+                        </span>
+                    </td>
+                    <td>{{ grade.comment|default:"—" }}</td>
+                    <td>
+                        {% if grade.teacher %}
+                            {{ grade.teacher.get_full_name|default:grade.teacher.username }}
+                        {% else %}—{% endif %}
+                    </td>
+                    <td>{{ grade.created_at|date:"d.m.Y H:i" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-msg">Оцінок поки немає.</div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
