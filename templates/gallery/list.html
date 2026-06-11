@@ -10,7 +10,6 @@
 <div class="gallery-page">
   <div class="container">
 
-    
     <header class="gallery-hero">
       <p class="gallery-hero__label">// Heist Academy — Архів</p>
       <h1 class="gallery-hero__title">Медіа<span>галерея</span></h1>
@@ -20,19 +19,95 @@
     <div class="gold-rule"></div>
 
     
-    <nav class="filter-bar" aria-label="Фільтр за типом">
-      <span class="filter-bar__label">Тип:</span>
-      <a href="{% url 'gallery:list' %}"
-         class="filter-btn {% if not media_type_filter %}active{% endif %}">
-        Усі
-      </a>
-      {% for value, label in media_types %}
-      <a href="{% url 'gallery:list' %}?type={{ value }}"
-         class="filter-btn {% if media_type_filter == value %}active{% endif %}">
-        {{ label }}
-      </a>
-      {% endfor %}
-    </nav>
+    <div class="filter-panel">
+
+      
+      <form class="search-form" method="get" action="{% url 'gallery:list' %}">
+        {% if media_type_filter %}<input type="hidden" name="type"     value="{{ media_type_filter }}">{% endif %}
+        {% if category_filter   %}<input type="hidden" name="category" value="{{ category_filter }}">{% endif %}
+        {% if sort != "-created_at" %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+
+        <div class="search-form__inner">
+          <input class="search-form__input"
+                 type="search"
+                 name="q"
+                 value="{{ search_query }}"
+                 placeholder="Пошук за назвою або подією..."
+                 autocomplete="off">
+          <button class="search-form__btn" type="submit" aria-label="Пошук">🔍</button>
+          {% if search_query %}
+          <a class="search-form__clear" href="{% url 'gallery:list' %}{% if media_type_filter %}?type={{ media_type_filter }}{% endif %}">✕</a>
+          {% endif %}
+        </div>
+      </form>
+
+      
+      <div class="filter-row">
+
+        
+        <nav class="filter-bar" aria-label="Фільтр за типом">
+          <span class="filter-bar__label">Тип:</span>
+          <a href="{% url 'gallery:list' %}{% if search_query %}?q={{ search_query }}&{% else %}?{% endif %}{% if category_filter %}category={{ category_filter }}&{% endif %}sort={{ sort }}"
+             class="filter-btn {% if not media_type_filter %}active{% endif %}">
+            Усі
+          </a>
+          {% for value, label in media_types %}
+          <a href="{% url 'gallery:list' %}{% if search_query %}?q={{ search_query }}&{% else %}?{% endif %}{% if category_filter %}category={{ category_filter }}&{% endif %}sort={{ sort }}&type={{ value }}"
+             class="filter-btn {% if media_type_filter == value %}active{% endif %}">
+            {{ label }}
+          </a>
+          {% endfor %}
+        </nav>
+
+        
+        <nav class="filter-bar" aria-label="Фільтр за категорією">
+          <span class="filter-bar__label">Категорія:</span>
+          <a href="{% url 'gallery:list' %}{% if search_query %}?q={{ search_query }}&{% else %}?{% endif %}{% if media_type_filter %}type={{ media_type_filter }}&{% endif %}sort={{ sort }}"
+             class="filter-btn {% if not category_filter %}active{% endif %}">
+            Усі
+          </a>
+          {% for value, label in categories %}
+          <a href="{% url 'gallery:list' %}{% if search_query %}?q={{ search_query }}&{% else %}?{% endif %}{% if media_type_filter %}type={{ media_type_filter }}&{% endif %}sort={{ sort }}&category={{ value }}"
+             class="filter-btn {% if category_filter == value %}active{% endif %}">
+            {{ label }}
+          </a>
+          {% endfor %}
+        </nav>
+
+        
+        <div class="sort-bar">
+          <span class="filter-bar__label">Сортування:</span>
+          <select class="sort-select" onchange="applySort(this.value)">
+            {% for value, label in sort_options %}
+            <option value="{{ value }}" {% if sort == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+      </div>
+
+      
+      {% if search_query or media_type_filter or category_filter %}
+      <div class="active-filters">
+        <span class="active-filters__label">// Активні фільтри:</span>
+        {% if search_query %}
+          <span class="active-filter-tag">Пошук: «{{ search_query }}»</span>
+        {% endif %}
+        {% if media_type_filter %}
+          {% for value, label in media_types %}{% if value == media_type_filter %}
+            <span class="active-filter-tag">Тип: {{ label }}</span>
+          {% endif %}{% endfor %}
+        {% endif %}
+        {% if category_filter %}
+          {% for value, label in categories %}{% if value == category_filter %}
+            <span class="active-filter-tag">Категорія: {{ label }}</span>
+          {% endif %}{% endfor %}
+        {% endif %}
+        <a class="active-filters__reset" href="{% url 'gallery:list' %}">Скинути все</a>
+      </div>
+      {% endif %}
+
+    </div>
 
     
     {% if media_items %}
@@ -40,7 +115,6 @@
       {% for item in media_items %}
       <a class="media-card" href="{% url 'gallery:detail' item.id %}" aria-label="{{ item.title }}">
 
-    
         {% if item.media_type == 'video' %}
           <div class="media-card__video-placeholder">
             <div class="media-card__play-icon">▶</div>
@@ -52,10 +126,9 @@
                loading="lazy">
         {% endif %}
 
-        
         <span class="media-card__type-badge">{{ item.get_media_type_display }}</span>
+        <span class="media-card__category-badge">{{ item.get_category_display }}</span>
 
-        
         <div class="media-card__overlay">
           <p class="media-card__title">{{ item.title }}</p>
           <p class="media-card__meta">{{ item.action_name }} · {{ item.author.username }}</p>
@@ -68,32 +141,40 @@
     
     {% if is_paginated %}
     <nav class="pagination" aria-label="Сторінки">
+      {% with base_params=""%}
+
       {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">&laquo;</a>
+        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}{% if sort != '-created_at' %}&sort={{ sort }}{% endif %}">&laquo;</a>
       {% endif %}
 
       {% for num in paginator.page_range %}
         {% if page_obj.number == num %}
           <span class="current">{{ num }}</span>
         {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-          <a href="?page={{ num }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">{{ num }}</a>
+          <a href="?page={{ num }}{% if search_query %}&q={{ search_query }}{% endif %}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}{% if sort != '-created_at' %}&sort={{ sort }}{% endif %}">{{ num }}</a>
         {% endif %}
       {% endfor %}
 
       {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}">&raquo;</a>
+        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if media_type_filter %}&type={{ media_type_filter }}{% endif %}{% if category_filter %}&category={{ category_filter }}{% endif %}{% if sort != '-created_at' %}&sort={{ sort }}{% endif %}">&raquo;</a>
       {% endif %}
+
+      {% endwith %}
     </nav>
     {% endif %}
 
     {% else %}
     <div class="empty-state">
       <div class="empty-state__icon">🎞</div>
-      <p class="empty-state__text">Матеріали ще не додані або очікують схвалення.</p>
+      {% if search_query or media_type_filter or category_filter %}
+        <p class="empty-state__text">Нічого не знайдено за вашим запитом.</p>
+        <a href="{% url 'gallery:list' %}" class="btn-outline" style="margin-top:1rem">Скинути фільтри</a>
+      {% else %}
+        <p class="empty-state__text">Матеріали ще не додані або очікують схвалення.</p>
+      {% endif %}
     </div>
     {% endif %}
 
-    {% comment %} TODO: розкоментувати після створення view gallery:upload
     <div class="upload-cta">
       <p class="upload-cta__text">
         <strong>Маєш що показати?</strong><br>
@@ -101,8 +182,12 @@
       </p>
       <a href="{% url 'gallery:upload' %}" class="btn-gold">Завантажити матеріал</a>
     </div>
-    {% endcomment %}
 
   </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'gallery/js/gallery_list.js' %}"></script>
 {% endblock %}
