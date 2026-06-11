@@ -8,11 +8,12 @@ class MediaItemAdmin(admin.ModelAdmin):
         "title",
         "author",
         "media_type",
+        "category",
         "action_name",
         "is_approved",
         "created_at",
     )
-    list_filter = ("is_approved", "media_type", "action_name")
+    list_filter = ("is_approved", "media_type", "category", "action_name")
     list_editable = ("is_approved",)
     search_fields = ("title", "description", "action_name", "author__username")
     readonly_fields = ("created_at",)
@@ -28,7 +29,7 @@ class MediaItemAdmin(admin.ModelAdmin):
         (
             "Медіа",
             {
-                "fields": ("file", "media_type"),
+                "fields": ("file", "media_type", "category"),
             },
         ),
         (

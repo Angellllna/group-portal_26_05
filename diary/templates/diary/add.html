@@ -1,0 +1,185 @@
+{% extends "core/base.html" %}
+
+{% block title %}Додати оцінку – Heist Academy{% endblock %}
+
+{% block content %}
+<style>
+    .add-grade-section {
+        min-height: 100vh;
+        background:
+            linear-gradient(120deg, rgba(21, 17, 13, 0.94), rgba(52, 29, 26, 0.9)),
+            var(--ink, #15110d);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 20px 60px;
+    }
+
+    .add-grade-card {
+        width: 100%;
+        max-width: 520px;
+        border: 1px solid rgba(255, 248, 236, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 248, 236, 0.08);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+        padding: 36px 40px;
+        color: #fff8ec;
+    }
+
+    .add-grade-card h1 {
+        font-size: 22px;
+        font-weight: 800;
+        margin: 0 0 6px;
+        color: #fff8ec;
+    }
+
+    .add-grade-card .subtitle {
+        font-size: 13px;
+        color: rgba(255, 248, 236, 0.6);
+        margin-bottom: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 13px;
+        font-weight: 700;
+        color: rgba(255, 248, 236, 0.75);
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        margin-bottom: 6px;
+    }
+
+    .form-group select,
+    .form-group input[type="number"],
+    .form-group input[type="text"] {
+        width: 100%;
+        padding: 10px 14px;
+        background: rgba(255, 248, 236, 0.1);
+        border: 1px solid rgba(255, 248, 236, 0.25);
+        border-radius: 6px;
+        color: #fff8ec;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 160ms;
+    }
+
+    .form-group select option {
+        background: #2c2217;
+        color: #fff8ec;
+    }
+
+    .form-group select:focus,
+    .form-group input:focus {
+        border-color: var(--gold, #d6a84f);
+    }
+
+    .form-errors {
+        background: rgba(127, 29, 29, 0.4);
+        border: 1px solid rgba(127, 29, 29, 0.7);
+        border-radius: 6px;
+        padding: 12px 16px;
+        margin-bottom: 18px;
+        font-size: 13px;
+        color: #fca5a5;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 28px;
+    }
+
+    .btn-submit {
+        flex: 1;
+        min-height: 46px;
+        padding: 0 22px;
+        border: none;
+        border-radius: 6px;
+        background: var(--gold, #d6a84f);
+        color: #21170c;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: background 160ms, transform 160ms;
+    }
+
+    .btn-submit:hover {
+        background: #e7bd67;
+        transform: translateY(-1px);
+    }
+
+    .btn-cancel {
+        min-height: 46px;
+        padding: 0 22px;
+        border: 1px solid rgba(255, 248, 236, 0.28);
+        border-radius: 6px;
+        background: transparent;
+        color: #fff8ec;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        transition: border-color 160ms;
+    }
+
+    .btn-cancel:hover {
+        border-color: rgba(255, 248, 236, 0.6);
+    }
+</style>
+
+<div class="add-grade-section">
+    <div class="add-grade-card">
+        <h1>Додати оцінку</h1>
+        <p class="subtitle">Інструктор: {{ request.user.username }}</p>
+
+        {% if form.errors %}
+        <div class="form-errors">
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <div>{{ field.label }}: {{ error }}</div>
+                {% endfor %}
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.student.id_for_label }}">{{ form.student.label }}</label>
+                {{ form.student }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.subject.id_for_label }}">{{ form.subject.label }}</label>
+                {{ form.subject }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.score.id_for_label }}">{{ form.score.label }}</label>
+                {{ form.score }}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Зберегти оцінку</button>
+                <a href="{% url 'diary:list' %}" class="btn-cancel">Скасувати</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

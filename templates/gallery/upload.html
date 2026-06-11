@@ -10,14 +10,12 @@
 <div class="upload-page">
   <div class="container">
 
-    
     <nav class="breadcrumb" aria-label="Навігація">
       <a href="{% url 'gallery:list' %}">Галерея</a>
       <span class="breadcrumb__sep">//</span>
       <span>Завантажити</span>
     </nav>
 
-    
     {% if messages %}
     <div class="messages-bar" role="alert">
       {% for message in messages %}
@@ -28,7 +26,6 @@
     </div>
     {% endif %}
 
-    
     <header class="upload-header">
       <p class="upload-header__label">// Нова операція</p>
       <h1 class="upload-header__title">Додати <span>матеріал</span></h1>
@@ -39,10 +36,8 @@
 
     <div class="gold-rule"></div>
 
-    
     <div class="upload-layout">
 
-      
       <div class="form-card">
 
         {% if form.non_field_errors %}
@@ -59,7 +54,7 @@
         <form method="post" enctype="multipart/form-data" novalidate>
           {% csrf_token %}
 
-          
+          {# Назва #}
           <div class="form-group">
             <label class="form-label" for="{{ form.title.id_for_label }}">
               Назва <span class="required">*</span>
@@ -78,7 +73,7 @@
             {% endif %}
           </div>
 
-          
+          {# Назва події #}
           <div class="form-group">
             <label class="form-label" for="{{ form.action_name.id_for_label }}">
               Назва події <span class="required">*</span>
@@ -97,7 +92,7 @@
             {% endif %}
           </div>
 
-          
+          {# Тип медіа #}
           <div class="form-group">
             <label class="form-label" for="{{ form.media_type.id_for_label }}">
               Тип медіа <span class="required">*</span>
@@ -121,7 +116,31 @@
             {% endif %}
           </div>
 
-          
+          {# Категорія — нове поле #}
+          <div class="form-group">
+            <label class="form-label" for="{{ form.category.id_for_label }}">
+              Категорія <span class="required">*</span>
+            </label>
+            <div class="select-wrapper">
+              <select class="form-select {% if form.category.errors %}is-error{% endif %}"
+                      id="{{ form.category.id_for_label }}"
+                      name="{{ form.category.html_name }}">
+                {% for value, label in form.fields.category.choices %}
+                <option value="{{ value }}"
+                  {% if form.category.value == value %}selected{% endif %}>
+                  {{ label }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            {% if form.category.errors %}
+            <ul class="field-errors">
+              {% for error in form.category.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+            {% endif %}
+          </div>
+
+          {# Файл #}
           <div class="form-group">
             <label class="form-label">
               Файл <span class="required">*</span>
@@ -150,7 +169,7 @@
             {% endif %}
           </div>
 
-          
+          {# Опис #}
           <div class="form-group">
             <label class="form-label" for="{{ form.description.id_for_label }}">
               Опис
@@ -162,7 +181,6 @@
                       rows="4">{{ form.description.value|default:'' }}</textarea>
           </div>
 
-          
           <div class="form-submit">
             <button type="submit" class="btn-gold">Відправити на модерацію</button>
             <a href="{% url 'gallery:list' %}" class="btn-outline">Скасувати</a>
@@ -171,7 +189,6 @@
         </form>
       </div>
 
-      
       <aside class="info-side">
         <div>
           <p class="info-side__section-title">// Статус: {{ request.user.username }}</p>
