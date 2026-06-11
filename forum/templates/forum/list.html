@@ -10,10 +10,17 @@
         .status-closed { color: red; font-weight: bold; }
         a { text-decoration: none; color: #007bff; }
         a:hover { text-shadow: 0 0 1px #007bff; }
+        .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+        .topbar h1 { margin: 0; }
+        .btn-create { background: #007bff; color: white; padding: 10px 18px; border-radius: 6px; font-weight: bold; white-space: nowrap; }
+        .btn-create:hover { background: #0069d9; text-shadow: none; }
     </style>
 </head>
 <body>
-    <h1>Теми форуму</h1>
+    <div class="topbar">
+        <h1>Теми форуму</h1>
+        <a href="{% url 'forum:topic_create' %}" class="btn-create">+ Створити тему</a>
+    </div>
 
     {% for topic in topics %}
         <div class="topic-card">

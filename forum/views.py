@@ -1,5 +1,8 @@
-from django.views.generic import ListView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView
 
+from .forms import ForumTopicForm
 from .models import ForumTopic
 
 
@@ -18,3 +21,16 @@ class ForumTopicDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context["comments"] = self.object.comments.all()
         return context
+
+
+class ForumTopicCreateView(LoginRequiredMixin, CreateView):
+    model = ForumTopic
+    form_class = ForumTopicForm
+    template_name = "forum/create.html"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("forum:topic_detail", kwargs={"pk": self.object.pk})
