@@ -25,7 +25,7 @@ class MediaItem(models.Model):
         default=MediaType.PHOTO,
         verbose_name="Тип медіа",
     )
-    game_name = models.CharField(max_length=255, verbose_name="Назва гри")
+    action_name = models.CharField(max_length=255, verbose_name="Назва події")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення")
     is_approved = models.BooleanField(default=False, verbose_name="Схвалено")
 

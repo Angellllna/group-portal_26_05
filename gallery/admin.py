@@ -8,13 +8,13 @@ class MediaItemAdmin(admin.ModelAdmin):
         "title",
         "author",
         "media_type",
-        "game_name",
+        "action_name",
         "is_approved",
         "created_at",
     )
-    list_filter = ("is_approved", "media_type", "game_name")
+    list_filter = ("is_approved", "media_type", "action_name")
     list_editable = ("is_approved",)
-    search_fields = ("title", "description", "game_name", "author__username")
+    search_fields = ("title", "description", "action_name", "author__username")
     readonly_fields = ("created_at",)
     ordering = ("-created_at",)
 
@@ -22,7 +22,7 @@ class MediaItemAdmin(admin.ModelAdmin):
         (
             "Основна інформація",
             {
-                "fields": ("author", "title", "description", "game_name"),
+                "fields": ("author", "title", "description", "action_name"),
             },
         ),
         (
