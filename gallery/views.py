@@ -1,4 +1,9 @@
-from django.views.generic import ListView, DetailView
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView
+ 
+from .forms import MediaItemForm
 from .models import MediaItem
 
 
@@ -30,3 +35,18 @@ class MediaDetailView(DetailView):
 
     def get_queryset(self):
         return MediaItem.objects.filter(is_approved=True).select_related("author")
+
+  
+class MediaUploadView(LoginRequiredMixin, CreateView):
+    model = MediaItem
+    form_class = MediaItemForm
+    template_name = "gallery/upload.html"
+    success_url = reverse_lazy("gallery:list")
+ 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        messages.success(
+            self.request,
+            "Матеріал успішно завантажено і очікує підтвердження модератором.",
+        )
+        return super().form_valid(form)

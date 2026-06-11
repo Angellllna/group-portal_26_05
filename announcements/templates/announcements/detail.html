@@ -1,4 +1,5 @@
-{% extends 'base.html' %}
+{% extends "core/base.html" %}
+{% block title %}{{ announcement.title }} — Heist Academy{% endblock %}
 {% block content %}
 <div class="container">
     <a href="{% url 'announcements:list' %}">&larr; Назад до списку</a>
