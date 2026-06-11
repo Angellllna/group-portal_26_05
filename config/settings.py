@@ -39,9 +39,13 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Local apps
+    "core",
     "diary",
     "portfolio",
     "gallery",
+    "forum",
+    "announcements",
+    "accounts",
 ]
 
 MIDDLEWARE = [

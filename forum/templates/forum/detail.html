@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.title }}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+        .main-topic { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .comments-section { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .comment { border-bottom: 1px solid #eee; padding: 10px 0; }
+        .comment:last-child { border-bottom: none; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #6c757d; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <a href="{% url 'forum:topic_list' %}" class="back-link">&larr; Назад до списку тем</a>
+
+    <div class="main-topic">
+        <h1>{{ topic.title }}</h1>
+        <p><small>Автор: <strong>{{ topic.author }}</strong> | Дата створення: {{ topic.created_at|date:"d.m.Y H:i" }}</small></p>
+        <hr>
+        <p style="font-size: 1.1em; line-height: 1.6;">{{ topic.content|linebreaks }}</p>
+    </div>
+
+    <div class="comments-section">
+        <h3>Коментарі</h3>
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.author }}</strong> <small style="color: #888;">({{ comment.created_at|date:"d.m.Y H:i" }})</small></p>
+                <p>{{ comment.content|linebreaks }}</p>
+            </div>
+        {% empty %}
+            <p style="color: #888;">До цієї теми ще немає коментарів.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

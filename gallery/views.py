@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView, TemplateView
+from django.views.generic import CreateView, DetailView, ListView
 
 from .forms import MediaItemForm
 from .models import MediaItem
@@ -35,7 +35,6 @@ class MediaListView(ListView):
                 Q(action_name__icontains=search)
             )
 
-    
         sort = self.request.GET.get("sort", "-created_at")
         allowed_sorts = {
             "-created_at": "-created_at",
@@ -87,13 +86,3 @@ class MediaUploadView(LoginRequiredMixin, CreateView):
             "Матеріал успішно завантажено і очікує підтвердження модератором.",
         )
         return super().form_valid(form)
-
-
-class HomeGalleryView(TemplateView):
-    
-    def get_gallery_preview_queryset(self):
-        return (
-            MediaItem.objects.filter(is_approved=True)
-            .select_related("author")
-            .order_by("-created_at")[:4]
-        )

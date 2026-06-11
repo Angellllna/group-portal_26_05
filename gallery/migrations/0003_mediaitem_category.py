@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gallery', '0001_initial'),
+        ('gallery', '0002_rename_game_name_to_action_name'),
     ]
 
     operations = [
