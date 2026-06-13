@@ -6,12 +6,18 @@
     
     <article style="margin-top: 20px;">
         <h1>{{ announcement.title }}</h1>
-        <p><small>Опубліковано: {{ announcement.created_at|date:"d.m.Y H:i" }} | Автор: {{ announcement.author.username }}</small></p>
+        <p><small>Опубліковано: {{ announcement.created_at|date:"d.m.Y H:i" }} | Author: {{ announcement.author.username }}</small></p>
         <span class="badge">Важливість: {{ announcement.get_priority_display }}</span>
 
         <div class="content" style="margin-top: 20px; font-size: 1.1em; line-height: 1.6;">
             {{ announcement.content|linebreaks }}
         </div>
+        {% if user.is_authenticated and user == announcement.author or user.is_staff or user.is_superuser %}
+            <div style="margin-top: 20px; padding-top: 10px; border-top: 1px solid #ccc;">
+                <a href="{% url 'announcements:edit' pk=announcement.pk %}" style="color: #ffc107; margin-right: 15px; text-decoration: none; font-weight: bold;">Редагувати</a>
+                <a href="{% url 'announcements:delete' pk=announcement.pk %}" style="color: #dc3545; text-decoration: none; font-weight: bold;">Видалити</a>
+            </div>
+        {% endif %}
     </article>
 </div>
 {% endblock %}

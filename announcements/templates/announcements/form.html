@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 600px; margin-top: 30px;">
+    <h2>{{ title }}</h2>
+    <form method="post" style="margin-top: 20px;">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div style="color: red;">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer;">
+            Зберегти
+        </button>
+        <a href="{% url 'announcements:list' %}" style="margin-left: 15px; color: #555;">Скасувати</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 500px; margin-top: 40px; border: 1px solid red; padding: 20px; border-radius: 5px;">
+    <h2>Видалення оголошення</h2>
+    <p>Ви впевнені, що хочете видалити оголошення <strong>"{{ announcement.title }}"</strong>? Цю дію не можна буде скасувати.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="padding: 10px 20px; background: red; color: white; border: none; cursor: pointer;">
+            Так, видалити
+        </button>
+        <a href="{% url 'announcements:detail' pk=announcement.pk %}" style="margin-left: 15px; color: #555;">Скасувати</a>
+    </form>
+</div>
+{% endblock %}
