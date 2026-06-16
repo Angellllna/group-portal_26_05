@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login — Heist Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0a00;
+            color: #e8d9b0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #1a1100;
+            border: 1px solid rgba(180,130,40,0.2);
+            border-radius: 16px;
+            padding: 2.25rem 2rem;
+            box-shadow: 0 0 40px rgba(180,130,40,0.06);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, #b07d20, #d4a832);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logo-text { font-size: 16px; font-weight: 600; color: #d4a832; }
+        .logo-sub  { font-size: 12px; color: #7a6030; }
+
+        h1 { font-size: 22px; font-weight: 600; color: #f0dfa0; margin-bottom: 6px; }
+        .subtitle { font-size: 14px; color: #7a6030; margin-bottom: 1.75rem; }
+
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 1.25rem;
+        }
+        .alert-error   { background: rgba(180,60,30,0.15); color: #e8a090; border: 1px solid rgba(180,60,30,0.3); }
+        .alert-success { background: rgba(120,160,60,0.12); color: #b8d890; border: 1px solid rgba(120,160,60,0.25); }
+        .alert-info    { background: rgba(180,130,40,0.1); color: #d4a832; border: 1px solid rgba(180,130,40,0.2); }
+
+        .field { margin-bottom: 1rem; }
+        .field label {
+            display: block;
+            font-size: 13px;
+            color: #a08040;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .field input {
+            width: 100%;
+            padding: 9px 12px;
+            background: rgba(180,130,40,0.06);
+            border: 1px solid rgba(180,130,40,0.15);
+            border-radius: 8px;
+            color: #e8d9b0;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+        .field input:focus {
+            border-color: #b07d20;
+            box-shadow: 0 0 0 3px rgba(180,130,40,0.12);
+        }
+        .field input::placeholder { color: #3a2e10; }
+
+        .btn {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(135deg, #b07d20, #d4a832);
+            border: none;
+            border-radius: 8px;
+            color: #0f0a00;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: opacity 0.15s, transform 0.15s;
+        }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn:active { transform: translateY(0); }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1.5rem 0 1rem;
+            font-size: 12px;
+            color: #3a2e10;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-top: 1px solid rgba(180,130,40,0.1);
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 13px;
+            color: #7a6030;
+        }
+        .footer a { color: #d4a832; text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    <div class="logo">
+        <div class="logo-icon">🪙</div>
+        <div>
+            <div class="logo-text">Heist Academy</div>
+            <div class="logo-sub">Operative portal</div>
+        </div>
+    </div>
+
+    <h1>Welcome back</h1>
+    <p class="subtitle">Enter your credentials to continue.</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert
+                {% if message.tags == 'error' %}alert-error
+                {% elif message.tags == 'success' %}alert-success
+                {% else %}alert-info{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Your username" required autofocus>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••" required>
+        </div>
+
+        <button class="btn" type="submit">Log in</button>
+    </form>
+
+    <div class="divider">or</div>
+
+    <div class="footer">
+        No account yet? <a href="{% url 'accounts:register' %}">Register</a>
+    </div>
+
+</div>
+
+</body>
+</html>

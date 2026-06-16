@@ -16,8 +16,19 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from django.http import HttpResponse
+from django.shortcuts import redirect
+
+
+def home(request):
+    if request.user.is_authenticated:
+        return redirect("accounts:profile")
+    return redirect("accounts:login")
+
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path("admin/",        admin.site.urls),
+    path("accounts/",     include("accounts.urls")),
+    path("",              home, name="home"),
 ]

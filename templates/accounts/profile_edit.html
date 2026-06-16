@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile — Heist Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0a00;
+            color: #e8d9b0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .card {
+            width: 100%;
+            max-width: 460px;
+            background: #150f00;
+            border: 0.5px solid rgba(212,168,50,0.2);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .card-top { height: 3px; background: linear-gradient(90deg, #7a4f10, #d4a832, #7a4f10); }
+        .card-inner { padding: 2rem 1.75rem; }
+
+        .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 2rem; }
+        .logo-icon {
+            width: 34px; height: 34px;
+            background: #1f1500;
+            border: 0.5px solid rgba(212,168,50,0.3);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .logo-name { font-size: 14px; font-weight: 600; color: #d4a832; }
+        .logo-sub  { font-size: 11px; color: #5a4518; }
+
+        .avatar {
+            width: 60px; height: 60px;
+            background: #1f1500;
+            border: 0.5px solid rgba(212,168,50,0.3);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 600; color: #d4a832;
+            margin-bottom: 1.25rem;
+        }
+
+        .profile-name { font-size: 20px; font-weight: 600; color: #f0dfa0; margin-bottom: 4px; }
+        .profile-email { font-size: 13px; color: #6a5428; margin-bottom: 1.25rem; }
+
+        .role-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            font-size: 11px; font-weight: 500;
+            padding: 3px 10px;
+            border-radius: 20px;
+            background: rgba(212,168,50,0.1);
+            color: #d4a832;
+            border: 0.5px solid rgba(212,168,50,0.2);
+            margin-bottom: 1.5rem;
+            text-transform: capitalize;
+        }
+
+        .divider { height: 0.5px; background: rgba(212,168,50,0.08); margin: 1.25rem 0; }
+
+        .field-row {
+            display: flex; align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 0.5px solid rgba(212,168,50,0.06);
+        }
+        .field-row:last-child { border-bottom: none; }
+        .field-label { font-size: 12px; color: #6a5428; flex-shrink: 0; }
+        .field-value { font-size: 13px; color: #d4c090; text-align: right; }
+
+        .bio-block {
+            margin-top: 1rem;
+            padding: 12px;
+            background: rgba(212,168,50,0.04);
+            border: 0.5px solid rgba(212,168,50,0.1);
+            border-radius: 8px;
+            font-size: 13px;
+            color: #a08050;
+            line-height: 1.6;
+        }
+        .bio-empty { color: #3a2810; font-style: italic; }
+
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 9px 16px;
+            background: #9a6c18;
+            border: 0.5px solid rgba(212,168,50,0.3);
+            border-radius: 8px;
+            color: #f5e4b0;
+            font-size: 13px; font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn-ghost {
+            background: transparent;
+            border: 0.5px solid rgba(212,168,50,0.15);
+            color: #6a5428;
+        }
+
+        .card-footer {
+            border-top: 0.5px solid rgba(212,168,50,0.08);
+            padding: 1rem 1.75rem;
+            display: flex; gap: 10px;
+        }
+
+        .messages { margin-bottom: 1rem; }
+        .alert {
+            padding: 9px 12px; border-radius: 8px;
+            font-size: 12px; margin-bottom: 8px;
+            background: rgba(90,130,50,0.1);
+            color: #98c070;
+            border: 0.5px solid rgba(90,130,50,0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="card-top"></div>
+    <div class="card-inner">
+
+        <div class="logo-row">
+            <div class="logo-icon">🪙</div>
+            <div>
+                <div class="logo-name">Heist Academy</div>
+                <div class="logo-sub">Operative portal</div>
+            </div>
+        </div>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="avatar">{{ profile.user.username|first|upper }}</div>
+
+        <div class="profile-name">{{ profile.user.username }}</div>
+        <div class="profile-email">{{ profile.user.email|default:"No email set" }}</div>
+
+        <div class="role-badge">⬡ {{ profile.get_role_display }}</div>
+
+        <div class="field-row">
+            <span class="field-label">Codename</span>
+            <span class="field-value">{{ profile.codename }}</span>
+        </div>
+        <div class="field-row">
+            <span class="field-label">Member since</span>
+            <span class="field-value">{{ profile.created_at|date:"M d, Y" }}</span>
+        </div>
+
+        {% if profile.bio %}
+        <div class="bio-block">{{ profile.bio }}</div>
+        {% else %}
+        <div class="bio-block bio-empty">No bio yet.</div>
+        {% endif %}
+
+    </div>
+    <div class="card-footer">
+        <a href="{% url 'accounts:profile_edit' %}" class="btn">✎ Edit profile</a>
+        <a href="{% url 'accounts:logout' %}" class="btn btn-ghost">Logout</a>
+    </div>
+</div>
+</body>
+</html>
