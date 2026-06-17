@@ -80,3 +80,59 @@ def profile_edit_view(request):
         form = ProfileEditForm(instance=profile)
 
     return render(request, "accounts/profile_edit.html", {"form": form})
+
+
+"""
+ПРИКЛАД використання перевірки ролей в чужому app (наприклад "materials" або "events").
+Цей файл не треба підключати — він лише демонструє, як інші учні
+використовують accounts.permissions у своїх views.py.
+
+
+from django.http import HttpResponse
+from accounts.permissions import (
+    is_cadet,
+    is_instructor,
+    is_admin_role,
+    instructor_required,
+    admin_required,
+    role_required,
+)
+
+
+# 1) Звичайний курсант може ПЕРЕГЛЯДАТИ — доступно всім залогіненим
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def material_list(request):
+    return HttpResponse("Список матеріалів — доступно всім курсантам.")
+
+
+# 2) Інструктор (або admin) може СТВОРЮВАТИ матеріали / оголошення / події
+@instructor_required
+def create_announcement(request):
+    return HttpResponse("Форма створення оголошення — тільки для інструкторів і адмінів.")
+
+
+# 3) Тільки admin має повний доступ (наприклад видалення чужого контенту)
+@admin_required
+def delete_any_material(request):
+    return HttpResponse("Видалення — тільки для admin.")
+
+
+# 4) Кастомний набір ролей через role_required(...)
+@role_required("instructor", "admin")
+def create_event(request):
+    return HttpResponse("Створення події — instructor + admin.")
+
+
+# 5) Перевірка ролі прямо всередині view (без декоратора), коли логіка складніша
+def event_detail(request, event_id):
+    if is_admin_role(request.user):
+        can_edit = True
+    elif is_instructor(request.user):
+        can_edit = True   # інструктор теж може редагувати свою подію
+    else:
+        can_edit = False  # звичайний cadet — лише перегляд
+
+    return HttpResponse(f"Подія #{event_id}. Can edit: {can_edit}")
+""
