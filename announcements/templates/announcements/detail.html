@@ -1,0 +1,17 @@
+{% extends "core/base.html" %}
+{% block title %}{{ announcement.title }} — Heist Academy{% endblock %}
+{% block content %}
+<div class="container">
+    <a href="{% url 'announcements:list' %}">&larr; Назад до списку</a>
+    
+    <article style="margin-top: 20px;">
+        <h1>{{ announcement.title }}</h1>
+        <p><small>Опубліковано: {{ announcement.created_at|date:"d.m.Y H:i" }} | Автор: {{ announcement.author.username }}</small></p>
+        <span class="badge">Важливість: {{ announcement.get_priority_display }}</span>
+
+        <div class="content" style="margin-top: 20px; font-size: 1.1em; line-height: 1.6;">
+            {{ announcement.content|linebreaks }}
+        </div>
+    </article>
+</div>
+{% endblock %}

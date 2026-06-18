@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Створити нову тему форуму</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f9f9f9; }
+        .form-card { background: white; max-width: 640px; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { margin-top: 0; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #6c757d; text-decoration: none; }
+        .back-link:hover { text-decoration: underline; }
+        form p { margin: 0 0 16px; }
+        label { display: block; font-weight: bold; margin-bottom: 6px; }
+        input[type="text"], textarea { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 15px; font-family: inherit; }
+        input[type="text"]:focus, textarea:focus { outline: none; border-color: #007bff; }
+        .errorlist { color: #c62828; list-style: none; padding: 0; margin: 0 0 8px; font-size: 14px; }
+        button { background: #007bff; color: white; border: none; padding: 10px 22px; border-radius: 6px; font-size: 15px; font-weight: bold; cursor: pointer; }
+        button:hover { background: #0069d9; }
+    </style>
+</head>
+<body>
+    <a href="{% url 'forum:topic_list' %}" class="back-link">&larr; Назад до списку тем</a>
+
+    <div class="form-card">
+        <h1>Створити нову тему</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Опублікувати</button>
+        </form>
+    </div>
+</body>
+</html>

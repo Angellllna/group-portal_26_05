@@ -10,6 +10,12 @@ class MediaItem(models.Model):
         SCREENSHOT = "screenshot", "Скріншот"
         VIDEO = "video", "Відео"
 
+    class Category(models.TextChoices):
+        OPERATION = "operation", "Операція"
+        TRAINING = "training", "Тренування"
+        EVENT = "event", "Подія"
+        OTHER = "other", "Інше"
+
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -24,6 +30,12 @@ class MediaItem(models.Model):
         choices=MediaType.choices,
         default=MediaType.PHOTO,
         verbose_name="Тип медіа",
+    )
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices,
+        default=Category.OTHER,
+        verbose_name="Категорія",
     )
     action_name = models.CharField(max_length=255, verbose_name="Назва події")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата створення")

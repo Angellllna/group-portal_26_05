@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% block title %}Оголошення — Heist Academy{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Оголошення</h1>
+    <div class="announcements-list">
+        {% for announcement in announcements %}
+            <div class="announcement-item" style="border: 1px solid #ccc; margin-bottom: 15px; padding: 15px;">
+                <h2>
+                    <a href="{% url 'announcements:detail' pk=announcement.pk %}">
+                        {{ announcement.title }}
+                    </a>
+                </h2>
+                <p><strong>Важливість:</strong> {{ announcement.get_priority_display }}</p>
+                <p>{{ announcement.content|truncatewords:20 }}</p> 
+                <hr>
+                <small>
+                    Автор: {{ announcement.author.get_full_name|default:announcement.author.username }} | 
+                    Дата: {{ announcement.created_at|date:"d.m.Y H:i" }}
+                </small>
+            </div>
+        {% empty %}
+            <p>Наразі немає опублікованих оголошень.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
