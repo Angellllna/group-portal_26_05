@@ -1,58 +1,217 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Досьє курсантів</title>
-</head>
-<body>
-    <h1>Досьє курсантів Heist Academy</h1>
+{% extends "core/base.html" %}
 
-    <form method="get">
-        <label for="spec">Спеціалізація:</label>
-        <select name="specialization" id="spec">
-            <option value="">Всі</option>
-            {% for value, label in specializations %}
-                <option value="{{ value }}" {% if value == current_filter %}selected{% endif %}>
-                    {{ label }}
-                </option>
-            {% endfor %}
-        </select>
-        <button type="submit">Фільтрувати</button>
-        {% if current_filter %}
-            <a href="{% url 'portfolio:list' %}">Скинути фільтр</a>
+{% block title %}Досьє курсантів{% endblock %}
+
+{% block content %}
+<style>
+    .portfolio-section {
+        position: relative;
+        z-index: 1;
+        width: min(1120px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: 116px 0 56px;
+    }
+
+    .portfolio-section .hero-kicker {
+        margin: 0 0 18px;
+        color: var(--gold);
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+    }
+
+    .portfolio-section .hero-title {
+        max-width: 760px;
+        margin: 0 0 28px;
+        font-size: clamp(36px, 6vw, 64px);
+        line-height: 0.95;
+        color: #fff8ec;
+    }
+
+    .filter-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 32px;
+        padding: 16px 20px;
+        border: 1px solid rgba(255, 248, 236, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 248, 236, 0.08);
+        backdrop-filter: blur(12px);
+    }
+
+    .filter-bar label {
+        color: rgba(255, 248, 236, 0.7);
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .filter-bar select {
+        min-height: 40px;
+        padding: 0 12px;
+        border: 1px solid rgba(255, 248, 236, 0.28);
+        border-radius: 6px;
+        background: rgba(255, 248, 236, 0.1);
+        color: #fff8ec;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .filter-bar select option {
+        background: #21170c;
+        color: #fff8ec;
+    }
+
+    .filter-bar .button {
+        min-height: 40px;
+        padding: 0 16px;
+        font-size: 14px;
+    }
+
+    .filter-bar a.button {
+        border-color: rgba(255, 248, 236, 0.28);
+    }
+
+    .cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .dossier-card {
+        border: 1px solid rgba(255, 248, 236, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 248, 236, 0.08);
+        backdrop-filter: blur(12px);
+        overflow: hidden;
+        transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .dossier-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(214, 168, 79, 0.5);
+    }
+
+    .card-header {
+        padding: 20px;
+        border-bottom: 1px solid rgba(255, 248, 236, 0.14);
+    }
+
+    .card-codename {
+        margin: 0 0 6px;
+        color: #fff8ec;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .card-codename a {
+        color: inherit;
+        transition: color 160ms ease;
+    }
+
+    .card-codename a:hover {
+        color: var(--gold);
+    }
+
+    .card-meta {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        color: rgba(255, 248, 236, 0.68);
+        font-size: 14px;
+    }
+
+    .card-badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border: 1px solid rgba(214, 168, 79, 0.4);
+        border-radius: 4px;
+        color: var(--gold);
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .card-body {
+        padding: 16px 20px 20px;
+    }
+
+    .card-body p {
+        margin: 0;
+        color: rgba(255, 248, 236, 0.68);
+        line-height: 1.5;
+        font-size: 15px;
+    }
+
+    .empty-state {
+        padding: 48px 20px;
+        text-align: center;
+        border: 1px solid rgba(255, 248, 236, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 248, 236, 0.08);
+        color: rgba(255, 248, 236, 0.68);
+        font-size: 17px;
+    }
+
+    @media (max-width: 820px) {
+        .portfolio-section {
+            padding-top: 104px;
+        }
+    }
+</style>
+
+<section class="hero">
+    <div class="portfolio-section">
+        <p class="hero-kicker">Архів</p>
+        <h1 class="hero-title">Досьє курсантів</h1>
+
+        <form method="get" class="filter-bar">
+            <label for="spec">Фільтр:</label>
+            <select name="specialization" id="spec">
+                <option value="">Всі спеціалізації</option>
+                {% for value, label in specializations %}
+                    <option value="{{ value }}" {% if value == current_filter %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="button button-primary">Застосувати</button>
+            {% if current_filter %}
+                <a href="{% url 'portfolio:list' %}" class="button">Скинути</a>
+            {% endif %}
+        </form>
+
+        {% if portfolios %}
+            <div class="cards-grid">
+                {% for p in portfolios %}
+                    <article class="dossier-card">
+                        <div class="card-header">
+                            <h2 class="card-codename">
+                                <a href="{% url 'portfolio:detail' p.id %}">{{ p.codename }}</a>
+                            </h2>
+                            <div class="card-meta">
+                                <span class="card-badge">{{ p.get_specialization_display }}</span>
+                                <span>Рівень {{ p.level }}</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% if p.bio %}
+                                <p>{{ p.bio|truncatewords:20 }}</p>
+                            {% else %}
+                                <p><em>Опис засекречено</em></p>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>За вашим запитом досьє не знайдено.</p>
+            </div>
         {% endif %}
-    </form>
-
-    {% if portfolios %}
-        <section>
-            {% for p in portfolios %}
-                <article>
-                    <header>
-                        <h2>
-                            <a href="{% url 'portfolio:detail' p.id %}">{{ p.codename }}</a>
-                        </h2>
-                        <p>Рівень {{ p.level }}</p>
-                    </header>
-
-                    <section>
-                        <h3>Спеціалізація</h3>
-                        <p>{{ p.get_specialization_display }}</p>
-                    </section>
-
-                    <section>
-                        <h3>Короткий опис</h3>
-                        {% if p.bio %}
-                            <p>{{ p.bio|truncatewords:20 }}</p>
-                        {% else %}
-                            <p><em>Опис відсутній</em></p>
-                        {% endif %}
-                    </section>
-                </article>
-            {% endfor %}
-        </section>
-    {% else %}
-        <p>За вашим запитом досьє не знайдено.</p>
-    {% endif %}
-</body>
-</html>
+    </div>
+</section>
+{% endblock %}
