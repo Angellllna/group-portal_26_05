@@ -6,7 +6,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import ForumTopic
 from .forms import ForumTopicForm, ForumCommentForm
-
+#
 
 class ForumTopicListView(ListView):
     model = ForumTopic
