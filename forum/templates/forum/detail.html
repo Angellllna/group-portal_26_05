@@ -30,8 +30,31 @@
                 <p>{{ comment.content|linebreaks }}</p>
             </div>
         {% empty %}
-            <p style="color: #888;">До цієї теми ще немає коментарів.</p>
+            <p style="color: #888;">до цієї теми ще нема коментарів</p>
         {% endfor %}
     </div>
+<div class="comments-section">
+    <h3>Коментарі</h3>
+    {% for comment in comments %}
+        <div class="comment">
+            <p><strong>{{ comment.author }}</strong>: {{ comment.content }}</p>
+        </div>
+    {% endfor %}
+
+    <hr>
+
+    {% if topic.is_closed %}
+        <p><em>Тема закрита, додавання коментарів неможливе.</em></p>
+    {% elif user.is_authenticated %}
+        <h4>Додати коментар:</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Відправити</button>
+        </form>
+    {% else %}
+        <p><a href="{% url 'login' %}">Увійдіть</a>, щоб додати коментар.</p>
+    {% endif %}
+</div>
 </body>
 </html>

@@ -1,7 +1,19 @@
 # forum/forms.py
 from django import forms
 from .models import ForumTopic
+from django import forms
+from .models import ForumComment
 
+class ForumCommentForm(forms.ModelForm):
+    class Meta:
+        model = ForumComment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'ваш коментар...', 'rows': 3}),
+        }
+        labels = {
+            'content': 'коментар',
+        }
 class ForumTopicForm(forms.ModelForm):
     class Meta:
         model = ForumTopic
