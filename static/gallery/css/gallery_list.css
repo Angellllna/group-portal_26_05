@@ -1,12 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&family=Share+Tech+Mono&display=swap');
 
-/* ─── Override base.html body background for gallery page ─────────────── */
+
 body:has(.gallery-page) {
   background: #0d0d0d !important;
   color: #d4d0c8;
 }
 
-/* ─── Variables ────────────────────────────────────────────────────────── */
+
+
 .gallery-page {
   --gold:    #c9a84c;
   --gold-lt: #e8c96a;
@@ -18,7 +19,8 @@ body:has(.gallery-page) {
   --text:    #d4d0c8;
 }
 
-/* ─── Page shell ───────────────────────────────────────────────────────── */
+
+
 .gallery-page {
   background: #0d0d0d;
   min-height: 100vh;
@@ -26,7 +28,8 @@ body:has(.gallery-page) {
   color: #d4d0c8;
 }
 
-/* ─── Container (not defined in base.html) ─────────────────────────────── */
+
+
 .gallery-page .container {
   max-width: 1280px;
   margin: 0 auto;
@@ -38,7 +41,8 @@ body:has(.gallery-page) {
   }
 }
 
-/* ─── Hero ─────────────────────────────────────────────────────────────── */
+
+
 .gallery-hero {
   position: relative;
   padding: 72px 0 56px;
@@ -84,7 +88,8 @@ body:has(.gallery-page) {
   font-size: 1.05rem;
 }
 
-/* ─── Gold rule ────────────────────────────────────────────────────────── */
+
+
 .gold-rule {
   height: 1px;
   background: linear-gradient(90deg, transparent, #c9a84c 30%, #c9a84c 70%, transparent);
@@ -92,7 +97,8 @@ body:has(.gallery-page) {
   opacity: .45;
 }
 
-/* ─── Filter panel ─────────────────────────────────────────────────────── */
+
+
 .filter-panel {
   display: flex;
   flex-direction: column;
@@ -100,7 +106,8 @@ body:has(.gallery-page) {
   margin-bottom: 36px;
 }
 
-/* ─── Search form ──────────────────────────────────────────────────────── */
+
+
 .search-form__inner {
   display: flex;
   align-items: stretch;
@@ -127,7 +134,8 @@ body:has(.gallery-page) {
   color: #555;
   font-style: italic;
 }
-/* hide browser's native search clear button */
+
+
 .search-form__input::-webkit-search-cancel-button { display: none; }
 
 .search-form__btn {
@@ -158,7 +166,8 @@ body:has(.gallery-page) {
 }
 .search-form__clear:hover { color: #c9a84c; }
 
-/* ─── Filter row ───────────────────────────────────────────────────────── */
+
+
 .filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -201,7 +210,8 @@ body:has(.gallery-page) {
   background: rgba(201,168,76,.06);
 }
 
-/* ─── Sort bar ─────────────────────────────────────────────────────────── */
+
+
 .sort-bar {
   display: flex;
   align-items: center;
@@ -246,7 +256,8 @@ body:has(.gallery-page) {
   color: #d4d0c8;
 }
 
-/* ─── Active filters ───────────────────────────────────────────────────── */
+
+
 .active-filters {
   display: flex;
   align-items: center;
@@ -281,14 +292,16 @@ body:has(.gallery-page) {
 }
 .active-filters__reset:hover { color: #c9a84c; }
 
-/* ─── Media grid ───────────────────────────────────────────────────────── */
+
+
 .media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2px;
 }
 
-/* ─── Media card ───────────────────────────────────────────────────────── */
+
+
 .media-card {
   position: relative;
   background: #1a1a1a;
@@ -402,7 +415,8 @@ body:has(.gallery-page) {
   text-transform: uppercase;
 }
 
-/* ─── Empty state ──────────────────────────────────────────────────────── */
+
+
 .empty-state {
   text-align: center;
   padding: 80px 20px;
@@ -420,7 +434,8 @@ body:has(.gallery-page) {
   font-size: 1.2rem;
 }
 
-/* ─── Pagination ───────────────────────────────────────────────────────── */
+
+
 .pagination {
   display: flex;
   justify-content: center;
@@ -449,7 +464,8 @@ body:has(.gallery-page) {
   background: rgba(201,168,76,.08);
 }
 
-/* ─── Upload CTA ───────────────────────────────────────────────────────── */
+
+
 .upload-cta {
   margin-top: 48px;
   padding: 28px 36px;
@@ -471,7 +487,8 @@ body:has(.gallery-page) {
   font-style: italic;
 }
 
-/* ─── Buttons ──────────────────────────────────────────────────────────── */
+
+
 .btn-gold {
   font-family: 'Share Tech Mono', monospace;
   font-size: .72rem;
