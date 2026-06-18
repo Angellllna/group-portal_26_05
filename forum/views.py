@@ -1,20 +1,23 @@
 # forum/views.py
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView
-from django.urls import reverse
-from .models import ForumTopic
-from .forms import ForumTopicForm
-from django.views.generic import ListView, DetailView
 from django.shortcuts import redirect
-from django.views.generic import DetailView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView
 from django.views.generic.edit import FormMixin
-from .forms import ForumCommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .models import ForumTopic
+from .forms import ForumTopicForm, ForumCommentForm
+
+
+class ForumTopicListView(ListView):
+    model = ForumTopic
+    template_name = "forum/list.html"
+    context_object_name = "topics"
 
 
 class ForumTopicDetailView(FormMixin, DetailView):
     model = ForumTopic
-    template_name = 'forum/detail.html'
-    context_object_name = 'topic'
+    template_name = "forum/detail.html"
+    context_object_name = "topic"
     form_class = ForumCommentForm
 
     def get_context_data(self, **kwargs):
@@ -44,6 +47,7 @@ class ForumTopicDetailView(FormMixin, DetailView):
         comment.author = self.request.user
         comment.save()
         return redirect(reverse('forum:topic_detail', kwargs={'pk': self.object.pk}))
+
 
 class ForumTopicCreateView(LoginRequiredMixin, CreateView):
     model = ForumTopic
