@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'form.css' %}">
 <div class="container" style="max-width: 600px; margin-top: 30px;">
     <h2>{{ title }}</h2>
     <form method="post" style="margin-top: 20px;">

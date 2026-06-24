@@ -1,0 +1,76 @@
+/* Темний шоколадно-чорний фон із фірмовою сіткою Heist Academy */
+body {
+    background: #1a1613 !important;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0) !important;
+    background-size: 24px 24px !important;
+    color: #f5f5f5 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Твій <div class="container"> перетворюємо на скляну картку небезпечної зони */
+.container {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 77, 77, 0.2) !important; /* Легкий червоний контур тривоги */
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6) !important;
+    margin: 80px auto !important; /* Гарне центрування по вертикалі */
+    padding: 35px !important;
+    text-align: center;
+}
+
+/* Твій заголовок <h2> */
+.container h2 {
+    color: #ff4d4d !important; /* Червоний колір попередження */
+    text-transform: uppercase !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    margin-top: 0 !important;
+    margin-bottom: 20px !important;
+}
+
+/* Твій текст попередження */
+.container p {
+    font-size: 16px !important;
+    color: #e0e0e0 !important;
+    line-height: 1.5 !important;
+    margin-bottom: 30px !important;
+}
+
+/* Назва оголошення всередині тексту */
+.container p strong {
+    color: #ffffff !important;
+    font-size: 18px !important;
+}
+
+/* Твоя кнопка <button type="submit" class="btn btn-danger"> */
+.container form button.btn-danger {
+    background: #ff4d4d !important; /* Яскравіший фірмовий червоний */
+    color: #ffffff !important;
+    padding: 12px 28px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s !important;
+}
+
+.container form button.btn-danger:hover {
+    background: #ff1a1a !important; /* Глибокий червоний при наведенні */
+}
+
+/* Твоє посилання "Скасувати" (тег <a> після кнопки) */
+.container form a {
+    margin-left: 20px !important;
+    color: #a0a0a0 !important; /* Замість стандартного #555 */
+    text-decoration: none !important;
+    font-size: 15px !important;
+    transition: color 0.2s !important;
+}
+
+.container form a:hover {
+    color: #ffffff !important;
+}

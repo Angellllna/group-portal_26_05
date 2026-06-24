@@ -1,5 +1,7 @@
 {% extends 'core/base.html' %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'delete.css' %}">
 <div class="container" style="max-width: 500px; margin-top: 40px; border: 1px solid red; padding: 20px; border-radius: 5px;">
     <h2>Видалення оголошення</h2>
     <p>Ви впевнені, що хочете видалити оголошення <strong>"{{ announcement.title }}"</strong>? Цю дію не можна буде скасувати.</p>
