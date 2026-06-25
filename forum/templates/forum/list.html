@@ -25,7 +25,7 @@
     {% for topic in topics %}
         <div class="topic-card">
             <h2><a href="{% url 'forum:topic_detail' topic.id %}">{{ topic.title }}</a></h2>
-            <p><strong>Автор:</strong> {{ topic.author }} | <strong>Дата створення:</strong> {{ topic.created_at|date:"d.m.Y H:i" }}</p>
+            <p><strong>Автор:</strong> {{ topic.author }} | <strong>дата створення:</strong> {{ topic.created_at|date:"d.m.Y H:i" }}</p>
             <p><strong>Статус:</strong>
                 {% if topic.is_closed %}
                     <span class="status-closed">Закрита</span>

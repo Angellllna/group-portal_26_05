@@ -1,5 +1,5 @@
+# forum/urls.py
 from django.urls import path
-
 from .views import ForumTopicListView, ForumTopicDetailView, ForumTopicCreateView
 
 app_name = "forum"
