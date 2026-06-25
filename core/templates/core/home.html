@@ -14,9 +14,13 @@
                 обговорювати завдання на форумі та відстежувати свій прогрес.
             </p>
             <div class="hero-actions">
-                <a class="button button-primary" href="#">Перейти до оголошень</a>
-                <a class="button" href="#">Переглянути події</a>
-                <a class="button" href="#">Увійти в акаунт</a>
+                <a class="button button-primary" href="{% url 'announcements:list' %}">Перейти до оголошень</a>
+                <a class="button" href="{% url 'forum:topic_list' %}">Перейти до форуму</a>
+                {% if user.is_authenticated %}
+                <a class="button" href="{% url 'accounts:profile' %}">Мій акаунт</a>
+                {% else %}
+                <a class="button" href="{% url 'accounts:login' %}">Увійти в акаунт</a>
+                {% endif %}
             </div>
         </div>
 
@@ -58,7 +62,7 @@
                     <h3>Оголошення</h3>
                     <p>Важливі новини, попередження та повідомлення від адміністрації Академії.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <a class="section-link" href="{% url 'announcements:list' %}">Перейти</a>
             </article>
 
             <article class="section-card">
@@ -66,7 +70,7 @@
                     <h3>Форум</h3>
                     <p>Місце для обговорення завдань, стратегій, питань та командних планів.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <a class="section-link" href="{% url 'forum:topic_list' %}">Перейти</a>
             </article>
 
             <article class="section-card">
@@ -74,7 +78,7 @@
                     <h3>Електронний щоденник</h3>
                     <p>Оцінки, домашні завдання, відвідування та навчальний прогрес курсанта.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <a class="section-link" href="{% url 'diary:list' %}">Перейти</a>
             </article>
 
             <article class="section-card">
@@ -82,7 +86,7 @@
                     <h3>Події</h3>
                     <p>Календар місій, зустрічей, тренувань та спеціальних активностей Академії.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <span class="section-link section-link--soon">Скоро</span>
             </article>
 
             <article class="section-card">
@@ -90,7 +94,7 @@
                     <h3>Голосування</h3>
                     <p>Опитування та рішення групи щодо подій, тем, місій і внутрішніх ініціатив.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <span class="section-link section-link--soon">Скоро</span>
             </article>
 
             <article class="section-card">
@@ -98,7 +102,7 @@
                     <h3>Галерея</h3>
                     <p>Фото, зображення та візуальні матеріали з життя курсантів і проєктів.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <a class="section-link" href="{% url 'gallery:list' %}">Перейти</a>
             </article>
 
             <article class="section-card">
@@ -106,7 +110,7 @@
                     <h3>Портфоліо</h3>
                     <p>Особисті роботи, досягнення, досьє та приклади виконаних завдань.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <a class="section-link" href="{% url 'portfolio:list' %}">Перейти</a>
             </article>
 
             <article class="section-card">
@@ -114,7 +118,7 @@
                     <h3>Матеріали</h3>
                     <p>Навчальні файли, інструкції, корисні посилання та ресурси для підготовки.</p>
                 </div>
-                <a class="section-link" href="#">Перейти</a>
+                <span class="section-link section-link--soon">Скоро</span>
             </article>
         </div>
     </div>
