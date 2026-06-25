@@ -6,7 +6,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import ForumTopic
 from .forms import ForumTopicForm, ForumCommentForm
-#
+
 
 class ForumTopicListView(ListView):
     model = ForumTopic
@@ -28,7 +28,7 @@ class ForumTopicDetailView(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('login')
+            return redirect(f"{reverse('admin:login')}?next={request.path}")
 
         self.object = self.get_object()
 

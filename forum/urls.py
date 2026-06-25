@@ -9,4 +9,3 @@ urlpatterns = [
     path("create/", ForumTopicCreateView.as_view(), name="topic_create"),
     path("<int:pk>/", ForumTopicDetailView.as_view(), name="topic_detail"),
 ]
-#

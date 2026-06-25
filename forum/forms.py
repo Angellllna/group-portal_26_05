@@ -1,8 +1,7 @@
 # forum/forms.py
 from django import forms
-from .models import ForumTopic
-from django import forms
-from .models import ForumComment
+from .models import ForumTopic, ForumComment
+
 
 class ForumCommentForm(forms.ModelForm):
     class Meta:
@@ -14,6 +13,8 @@ class ForumCommentForm(forms.ModelForm):
         labels = {
             'content': 'коментар',
         }
+
+
 class ForumTopicForm(forms.ModelForm):
     class Meta:
         model = ForumTopic
