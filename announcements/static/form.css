@@ -1,0 +1,103 @@
+/* Перебиваємо дефолтний білий фон сторінки на темний шоколадно-чорний з сіткою */
+body {
+    background: #1a1613 !important;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0) !important;
+    background-size: 24px 24px !important;
+    color: #f5f5f5 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Твій оригінальний <div class="container"> перетворюємо на скляну картку Heist Academy */
+.container {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    padding: 35px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+    margin: 50px auto !important; /* Центруємо гарно на сторінці */
+}
+
+/* Твій заголовок <h2> */
+.container h2 {
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    margin-top: 0 !important;
+    margin-bottom: 25px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+}
+
+/* Твої блоки <div class="form-group"> та їхні <label> */
+.form-group label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    color: #d4a373 !important; /* Золотаво-пісочний колір як на головній */
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    font-size: 13px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Автоматично кастомізуємо поля (input, textarea, select), які генерує {{ field }} всередині твоїх .form-group */
+.form-group input[type="text"], 
+.form-group textarea, 
+.form-group select {
+    width: 100% !important;
+    padding: 12px !important;
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    box-sizing: border-box !important;
+    font-size: 15px !important;
+    transition: border-color 0.2s !important;
+}
+
+/* Ефект при кліку на поля */
+.form-group input:focus, 
+.form-group textarea:focus, 
+.form-group select:focus {
+    border-color: #ffb703 !important;
+    outline: none !important;
+}
+
+/* Якщо серед полів є чекбокс */
+.form-group input[type="checkbox"] {
+    transform: scale(1.3) !important;
+    margin-left: 5px !important;
+    cursor: pointer !important;
+}
+
+/* Твоя кнопка <button type="submit" class="btn btn-primary"> */
+.container form button.btn-primary {
+    background: #d4a373 !important; /* Перебиваємо синій на золото */
+    color: #1a1613 !important;
+    padding: 12px 28px !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    font-size: 15px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s !important;
+}
+
+.container form button.btn-primary:hover {
+    background: #ffb703 !important; /* Яскравіший при наведенні */
+}
+
+/* Твоє посилання "Скасувати" (тег <a> після кнопки) */
+.container form a {
+    margin-left: 20px !important;
+    color: #a0a0a0 !important; /* Перебиваємо дефолтний сірий колір */
+    text-decoration: none !important;
+    font-size: 15px !important;
+    transition: color 0.2s !important;
+}
+
+.container form a:hover {
+    color: #ffffff !important;
+}

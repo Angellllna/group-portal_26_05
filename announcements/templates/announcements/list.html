@@ -1,6 +1,8 @@
 {% extends "core/base.html" %}
 {% block title %}Оголошення — Heist Academy{% endblock %}
 {% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'list.css' %}">
 <div class="container">
     <h1>Оголошення</h1>
     <div class="announcements-list">

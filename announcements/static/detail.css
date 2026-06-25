@@ -1,0 +1,118 @@
+/* Шоколадно-темний бекграунд з фірмовою сіткою */
+body {
+    background: #1a1613 !important;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0) !important;
+    background-size: 24px 24px !important;
+    color: #f5f5f5 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Головний контейнер картки детального перегляду */
+.container {
+    max-width: 800px !important;
+    margin: 40px auto !important;
+    padding: 35px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Кнопка "Назад до списку" */
+.container > a[href*="list"] {
+    display: inline-block !important;
+    color: #a0a0a0 !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 25px !important;
+    transition: color 0.2s !important;
+}
+
+.container > a[href*="list"]:hover {
+    color: #ffffff !important;
+}
+
+/* Головний заголовок оголошення */
+.container article h1 {
+    color: #ffffff !important;
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    margin-top: 0 !important;
+    margin-bottom: 10px !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Текст мета-даних (Дата, Автор) */
+.container article small {
+    color: #888 !important;
+    font-size: 13px !important;
+}
+
+/* Плашка (бейджик) важливості */
+.container article .badge {
+    display: inline-block !important;
+    margin-top: 12px !important;
+    padding: 6px 12px !important;
+    background: rgba(214, 163, 115, 0.1) !important;
+    border: 1px solid rgba(214, 163, 115, 0.3) !important;
+    color: #d4a373 !important; /* Наш золотавий фірмовий колір */
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* Блок основного тексту оголошення */
+.container article .content {
+    color: #e5e5e5 !important;
+    margin-top: 30px !important;
+    padding: 20px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 8px !important;
+    border-left: 3px solid #d4a373 !important; /* Золота лінія акценту зліва */
+}
+
+/* Блок з кнопками редагування та видалення */
+.container article div[style*="border-top"] {
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin-top: 35px !important;
+    padding-top: 20px !important;
+}
+
+/* Посилання "Редагувати" */
+.container article a[href*="edit"] {
+    color: #1a1613 !important;
+    background: #d4a373 !important; /* Міняємо жовтий на фірмове золото */
+    padding: 8px 18px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s !important;
+}
+
+.container article a[href*="edit"]:hover {
+    background: #ffb703 !important;
+}
+
+/* Посилання "Видалити" */
+.container article a[href*="delete"] {
+    color: #ffffff !important;
+    background: #ff4d4d !important; /* Гарний червоний колір під канони */
+    padding: 8px 18px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-left: 15px !important;
+    transition: background 0.2s !important;
+}
+
+.container article a[href*="delete"]:hover {
+    background: #ff1a1a !important;
+}

@@ -1,0 +1,100 @@
+/* Темний шоколадно-чорний фон із фірмовою сіткою */
+body {
+    background: #1a1613 !important;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0) !important;
+    background-size: 24px 24px !important;
+    color: #f5f5f5 !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Контейнер сторінки списку */
+.container {
+    max-width: 900px !important;
+    margin: 40px auto !important;
+    padding: 0 20px !important;
+}
+
+/* Головний заголовок "Оголошення" */
+.container h1 {
+    color: #ffffff !important;
+    text-transform: uppercase !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 30px !important;
+    font-size: 32px !important;
+}
+
+/* Кожне окреме оголошення перетворюємо на стильну скляну картку */
+.announcement-item {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4) !important;
+    margin-bottom: 25px !important;
+    padding: 25px !important;
+    transition: transform 0.2s, border-color 0.2s !important;
+}
+
+/* Легкий ефект підсвічування при наведенні на картку */
+.announcement-item:hover {
+    border-color: rgba(212, 163, 115, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+/* Заголовок всередині картки оголошення */
+.announcement-item h2 {
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+}
+
+/* Посилання на детальну сторінку */
+.announcement-item h2 a {
+    color: #ffffff !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    transition: color 0.2s !important;
+}
+
+.announcement-item h2 a:hover {
+    color: #d4a373 !important; /* Золотаво-пісочний колір при наведенні */
+}
+
+/* Текст та мітки важливості */
+.announcement-item p {
+    color: #e0e0e0 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+}
+
+.announcement-item p strong {
+    color: #d4a373 !important; /* Золотий акцент для слова "Важливість:" */
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Розділювальна лінія всередині картки */
+.announcement-item hr {
+    border: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    margin: 15px 0 !important;
+}
+
+/* Мета-інформація (Автор, Дата) */
+.announcement-item small {
+    color: #a0a0a0 !important;
+    font-size: 13px !important;
+    display: block !important;
+}
+
+/* Повідомлення про порожній список */
+.announcements-list > p {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px dashed rgba(255, 255, 255, 0.1) !important;
+    padding: 20px !important;
+    text-align: center !important;
+    border-radius: 8px !important;
+    color: #888 !important;
+}
