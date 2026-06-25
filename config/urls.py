@@ -23,11 +23,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("", include("core.urls")),
     path("admin/", admin.site.urls),
+    path("accounts/", include("accounts.urls")),
     path("gallery/", include("gallery.urls", namespace="gallery")),
     path("portfolio/", include("portfolio.urls", namespace="portfolio")),
     path("diary/", include("diary.urls", namespace="diary")),
     path("forum/", include("forum.urls", namespace="forum")),
     path("announcements/", include("announcements.urls", namespace="announcements")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-

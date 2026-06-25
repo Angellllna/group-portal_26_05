@@ -29,7 +29,7 @@ class ForumTopicDetailView(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect(f"{reverse('admin:login')}?next={request.path}")
+            return redirect(f"{reverse('accounts:login')}?next={request.path}")
 
         self.object = self.get_object()
 

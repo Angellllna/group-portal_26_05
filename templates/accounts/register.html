@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register — Heist Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f0a00;
+            color: #e8d9b0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #150f00;
+            border: 0.5px solid rgba(212,168,50,0.2);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .card-top { height: 3px; background: linear-gradient(90deg, #7a4f10, #d4a832, #7a4f10); }
+        .card-inner { padding: 2rem 1.75rem; }
+
+        .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 1.75rem; }
+        .logo-icon {
+            width: 34px; height: 34px;
+            background: #1f1500;
+            border: 0.5px solid rgba(212,168,50,0.3);
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px;
+        }
+        .logo-name { font-size: 14px; font-weight: 600; color: #d4a832; }
+        .logo-sub  { font-size: 11px; color: #5a4518; }
+
+        h1 { font-size: 20px; font-weight: 600; color: #f0dfa0; margin-bottom: 4px; }
+        .subtitle { font-size: 13px; color: #6a5428; margin-bottom: 1.5rem; }
+
+        .alert {
+            display: flex; align-items: center; gap: 8px;
+            padding: 9px 12px; border-radius: 8px;
+            font-size: 12px; margin-bottom: 1rem;
+            background: rgba(180,50,30,0.1);
+            color: #e8a090;
+            border: 0.5px solid rgba(180,50,30,0.2);
+        }
+        .alert-success {
+            background: rgba(90,130,50,0.1);
+            color: #98c070;
+            border: 0.5px solid rgba(90,130,50,0.2);
+        }
+
+        .field { margin-bottom: 0.9rem; }
+        .field label {
+            display: flex; align-items: center; gap: 5px;
+            font-size: 12px; color: #7a6030; margin-bottom: 5px;
+        }
+        .field input {
+            width: 100%; padding: 9px 12px;
+            background: rgba(255,255,255,0.02);
+            border: 0.5px solid rgba(212,168,50,0.12);
+            border-radius: 8px;
+            color: #e0cca0; font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.15s;
+        }
+        .field input:focus {
+            outline: none;
+            border-color: rgba(212,168,50,0.4);
+            background: rgba(212,168,50,0.04);
+        }
+        .field input::placeholder { color: #2e2210; }
+        .field .hint { font-size: 11px; color: #3a2810; margin-top: 4px; }
+
+        .btn {
+            width: 100%; padding: 9px;
+            background: #9a6c18;
+            border: 0.5px solid rgba(212,168,50,0.3);
+            border-radius: 8px;
+            color: #f5e4b0; font-size: 13px; font-weight: 500;
+            font-family: inherit; cursor: pointer; margin-top: 6px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        .card-footer {
+            border-top: 0.5px solid rgba(212,168,50,0.08);
+            padding: 1rem 1.75rem;
+            text-align: center;
+            font-size: 12px; color: #5a4518;
+        }
+        .card-footer a { color: #c49828; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="card-top"></div>
+    <div class="card-inner">
+
+        <div class="logo-row">
+            <div class="logo-icon">🪙</div>
+            <div>
+                <div class="logo-name">Heist Academy</div>
+                <div class="logo-sub">Operative portal</div>
+            </div>
+        </div>
+
+        <h1>Create account</h1>
+        <p class="subtitle">Join the academy and begin your mission.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="field">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="e.g. igor_k" required autofocus>
+            </div>
+
+            <div class="field">
+                <label for="codename">Codename</label>
+                <input type="text" id="codename" name="codename" placeholder="e.g. Ghost, Cipher, Nova" required>
+                <div class="hint">Your unique operative alias.</div>
+            </div>
+
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="field">
+                <label for="password2">Confirm password</label>
+                <input type="password" id="password2" name="password2" placeholder="••••••••" required>
+            </div>
+
+            <button class="btn" type="submit">Create account →</button>
+        </form>
+
+    </div>
+    <div class="card-footer">
+        Already have an account? <a href="{% url 'accounts:login' %}">Log in</a>
+    </div>
+</div>
+</body>
+</html>
